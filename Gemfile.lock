@@ -132,6 +132,10 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     redis (4.1.2)
+    roo (2.8.2)
+      nokogiri (~> 1)
+      rubyzip (>= 1.2.1, < 2.0.0)
+    rubyzip (1.2.3)
     sassc (2.0.1)
       ffi (~> 1.9)
       rake
@@ -191,6 +195,7 @@ DEPENDENCIES
   puma
   rails (= 5.2.3)
   redis
+  roo (~> 2.8.0)
   sassc-rails
   simple_form
   spring
