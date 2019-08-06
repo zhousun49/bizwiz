@@ -4,8 +4,4 @@
 <p><%= e.key %>: <%= e.value %></p>
 <% end %>
 
-
-<%= @datatables.count %>
-<%= pie_chart @data_array %>
-<%= bar_chart @data_array %>
 <%= link_to "See the awesome graphs!", graph_path(@datatables[0].graph_id) %>
