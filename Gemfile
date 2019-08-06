@@ -16,6 +16,8 @@ gem 'uglifier'
 gem 'webpacker'
 gem "roo", "~> 2.8.0"
 # gem 'docx', '~> 0.2.07', :require => ["docx"]
+gem "chartkick"
+gem 'highcharts-rails'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
