@@ -14,41 +14,37 @@ class DatatablesController < ApplicationController
     @datatable = Datatable.new
   end
 
-  # def upload
-  #   @datatable = params[:uploaded_file].read
-  #   p 'content'
-  #   p @datatable
-  # end
-
   def import
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
-    # p sheet.size
-    hash_array = []
-    sheet.each(key: 'key', data: 'value') do |hash|
-      hash_array.push(hash.inspect)
+    row = []
+    key = []
+    sheet.each_row_streaming do |r|
+      row.push(r)
     end
-    hash_array[1..-1].each do |e|
-      key = eval(e)[:key]
-      value = eval(e)[:data]
-      @datatable = Datatable.new({key: key, value: value, graph_id: params[:graph_id]})
-      p @datatable.valid?
-      @datatable.save
+    row[1..-1].each { |e| key.push(e[0])}
+    row[1..-1].each_with_index do |e, i|
+      e[1..-1].each do |v|
+        p '------------------------------'
+        p v.value
+        p key[i].value
+        @datatable = Datatable.new({key: key[i].value, value: v.value, graph_id: params[:graph_id]})
+        p @datatable.valid?
+        @datatable.save
+        p 'saved'
+      end
     end
-    redirect_to root_url, notice: 'Products imported.'
+    redirect_to graph_datatables_path(params[:graph_id]), notice: 'Products imported.'
   end
 
-  # def create
-  #   @datatable = params[:uploaded_file]
-  #   p 'content'
-  #   p @datatable
-  #   raise
-  #   @datatable = Datatable.new(datable_params)
-  #   if @datatable.save
-  #     redirect_to datatables_path
-  #   end
-  # end
+  def destroy
+    @datatables = Datatable.all
+    @graph = @datatables.last.graph
+    @datatables.destroy_all
+    @graph.destroy
+    redirect_to root_path
+  end
 
   private
 

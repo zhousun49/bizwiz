@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :graphs do
+  resources :graphs, except: [:new] do
     resources :datatables do
       collection do
         post :import
