@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_082337) do
+ActiveRecord::Schema.define(version: 2019_08_06_164154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "datatables", force: :cascade do |t|
-    t.float "value"
+    t.string "value"
     t.string "key"
     t.bigint "graph_id"
     t.datetime "created_at", null: false
