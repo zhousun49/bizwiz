@@ -13,21 +13,22 @@ class DatatablesController < ApplicationController
     sheet = spreadsheet.sheet(0)
     row = []
     key = []
+    value = []
     sheet.each_row_streaming do |r|
       row.push(r)
     end
-    row[1..-1].each { |e| key.push(e[0])}
-    row[1..-1].each_with_index do |e, i|
-      e[1..-1].each do |v|
-        p '------------------------------'
-        p v.value
-        p key[i].value
-        @datatable = Datatable.new({key: key[i].value, value: v.value, graph_id: params[:graph_id]})
-        p @datatable.valid?
-        @datatable.save
-        p 'saved'
-      end
+    row[1..-1].each do |e|
+      key.push(e[0])
+      value.push(e[1])
     end
+    key_string = key.map(&:value).join(", ")
+    value_string = value.map(&:value).join(", ")
+    @datatable = Datatable.new(
+      key: key_string,
+      value: value_string,
+      graph_id: params[:graph_id]
+    )
+    @datatable.save
     redirect_to graph_datatables_path(params[:graph_id]), notice: 'Products imported.'
   end
 
