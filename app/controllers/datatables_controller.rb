@@ -18,20 +18,14 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
     # p sheet.size
-    p 'row 1'
-    p sheet.row(1)
     hash_array = []
-
     sheet.each(key: 'key', data: 'value') do |hash|
-      p 'hash'
-      p hash_array.push(hash.inspect)
-      # Datatable.new(hash.inspect)
-      p 'saved'
+      hash_array.push(hash.inspect)
     end
     hash_array[1..-1].each do |e|
       key = eval(e)[:key]
       value = eval(e)[:data]
-      @datatable = Datatable.new({key: key, value: value, graph_id: 1})
+      @datatable = Datatable.new({key: key, value: value, graph_id: params[:graph_id]})
       p @datatable.valid?
       @datatable.save
     end
