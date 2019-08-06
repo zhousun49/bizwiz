@@ -1,6 +1,13 @@
 class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.all
+    @data_array = []
+    @datatables.each do |data|
+      @temp_array = []
+      @temp_array << data.key
+      @temp_array << data.value
+      @data_array << @temp_array
+    end
   end
 
   def new
