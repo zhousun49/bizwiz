@@ -1,7 +1,7 @@
 class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.where(graph_id: params[:graph_id])
-    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/#{params[:graph_id]}/datatables")
+    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/17/datatables/")
     @data_array = []
     @datatables.each do |data|
       @temp_array = []
@@ -23,9 +23,9 @@ class DatatablesController < ApplicationController
 
     sheet.each_row_streaming { |r| @row.push(r) }
     if @row[0].last.value.class == String
-display(1)
+      display(1)
     else
-display(0)
+      display(0)
     end
     redirect_to graph_datatables_path(params[:graph_id])
   end
