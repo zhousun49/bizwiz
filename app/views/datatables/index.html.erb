@@ -4,8 +4,24 @@
 <p><%= e.key %>: <%= e.value %></p>
 <% end %>
 
-
 <%= @datatables.count %>
-<%= pie_chart @data_array %>
-<%= bar_chart @data_array %>
+<div id="canvas">
+  <%= pie_chart @data_array %>
+  <%= bar_chart @data_array %>
+</div>
+
+
+<button id="save-btn">Save image</button>
 <%= link_to "See the awesome graphs!", graph_path(@datatables[0].graph_id) %>
+
+<script>
+  var canvas = document.querySelector("#canvas canvas");
+  var button = document.getElementById("save-btn");
+  button.addEventListener('click', function(){
+    canvas.toBlob(function(blob) {
+      saveAs(blob, "pretty image.png");
+    })
+  });
+  console.log('canvas', canvas)
+  console.log('button', button)
+</script>
