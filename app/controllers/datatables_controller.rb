@@ -1,6 +1,6 @@
 class DatatablesController < ApplicationController
   def index
-    @datatables = Datatable.all
+    @datatables = Datatable.where(graph_id: params[:graph_id])
     @data_array = []
     @datatables.each do |data|
       @temp_array = []
@@ -39,7 +39,7 @@ class DatatablesController < ApplicationController
   end
 
   def destroy
-    @datatables = Datatable.all
+    @datatables = Datatable.where(graph_id: params[:graph_id])
     @graph = @datatables.last.graph
     @datatables.destroy_all
     @graph.destroy
