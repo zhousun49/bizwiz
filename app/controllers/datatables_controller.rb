@@ -1,6 +1,7 @@
 class DatatablesController < ApplicationController
   def index
-    @datatables = Datatable.all
+    @datatables = Datatable.where(graph_id: params[:graph_id])
+    @qr = RQRCode::QRCode.new("https://www.baidu.com/")
     @data_array = []
     @datatables.each do |data|
       @temp_array = []
@@ -38,11 +39,11 @@ class DatatablesController < ApplicationController
       end
 end
 
-    redirect_to graph_datatables_path(params[:graph_id]), notice: 'Products imported.'
+    redirect_to graph_datatables_path(params[:graph_id])
   end
 
   def destroy
-    @datatables = Datatable.all
+    @datatables = Datatable.where(graph_id: params[:graph_id])
     @graph = @datatables.last.graph
     @datatables.destroy_all
     @graph.destroy
