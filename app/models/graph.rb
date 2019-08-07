@@ -1,3 +1,3 @@
 class Graph < ApplicationRecord
-  has_many :datatables
+  has_many :datatables, dependent: :destroy
 end
