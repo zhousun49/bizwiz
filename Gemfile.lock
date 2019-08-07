@@ -51,6 +51,7 @@ GEM
     builder (3.2.3)
     byebug (11.0.1)
     chartkick (3.2.1)
+    chunky_png (1.3.11)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
@@ -138,6 +139,8 @@ GEM
     roo (2.8.2)
       nokogiri (~> 1)
       rubyzip (>= 1.2.1, < 2.0.0)
+    rqrcode (0.10.1)
+      chunky_png (~> 1.0)
     rubyzip (1.2.3)
     sassc (2.0.1)
       ffi (~> 1.9)
@@ -201,6 +204,7 @@ DEPENDENCIES
   rails (= 5.2.3)
   redis
   roo (~> 2.8.0)
+  rqrcode
   sassc-rails
   simple_form
   spring
