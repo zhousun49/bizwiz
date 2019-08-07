@@ -3,12 +3,26 @@
 <% @datatables.each do |e| %>
 <p><%= e.key %>: <%= e.value %></p>
 <% end %>
-
 <%= @datatables.count %>
-<div id="canvas">
+
+<button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
+<button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
+<button onclick="makeChart(event, 'line')" class = "tablinks">Line chart</button>
+
+
+<div id="canvas" class="tabcontent">
   <%= pie_chart @data_array %>
+</div>
+
+<div id="canvas" class="tabcontent">
   <%= bar_chart @data_array %>
 </div>
+
+<div id="canvas" class="tabcontent">
+  <%= line_chart @data_array %>
+</div>
+
+
 
 
 <button id="save-btn">Save image</button>
@@ -24,4 +38,19 @@
   });
   console.log('canvas', canvas)
   console.log('button', button)
+</script>
+
+
+<script>
+  function makeChart(argument) {
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+
+    tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+    document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+  }
 </script>
