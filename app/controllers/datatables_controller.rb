@@ -19,27 +19,25 @@ class DatatablesController < ApplicationController
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
-    row = []
-    key = []
-    sheet.each_row_streaming { |r| row.push(r) }
-    if row[0].last.value.class == String
-      row[1..-1].each { |e| key.push(e[0].value)}
-      row[1..-1].each_with_index do |e, i|
-        e[1..-1].each do |v|
-          @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]})
-        end
-      end
-    else
-      row[0..-1].each { |e| key.push(e[0].value)}
-      p key
-      row[0..-1].each_with_index do |e, i|
-        e[1..-1].each do |v|
-          @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]})
-        end
-      end
-end
+    @row = []
 
+    sheet.each_row_streaming { |r| @row.push(r) }
+    if @row[0].last.value.class == String
+display(1)
+    else
+display(0)
+    end
     redirect_to graph_datatables_path(params[:graph_id])
+  end
+
+  def display(integer)
+    key = []
+    @row[integer..-1].each { |e| key.push(e[0].value)}
+    @row[integer..-1].each_with_index do |e, i|
+      e[1..-1].each do |v|
+        @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) || (key[i].nil? == false)
+      end
+    end
   end
 
   def destroy
