@@ -12,6 +12,10 @@
   <body>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
-    <%= yield %>
+    <%= render 'navigation' %>
+    <main>
+      <%= yield %>
+    </main>
+    <%= render 'footer' %>
   </body>
 </html>
