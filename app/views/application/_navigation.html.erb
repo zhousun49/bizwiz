@@ -4,6 +4,6 @@
       <%= content_tag :span, "BizWiz" %>
       <%= content_tag :span, "Charts made easy" %>
     <% end %>
-    <a href="#" class="btn btn-primary">Get Started</a>
+    <%= link_to "Get Started", graphs_path(@graph), method: :POST, class: "btn btn-primary" %>
   </div>
 </nav>
