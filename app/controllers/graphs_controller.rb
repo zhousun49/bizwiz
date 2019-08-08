@@ -1,4 +1,6 @@
 class GraphsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
     @graph = Graph.new
     @graph.save
@@ -7,6 +9,7 @@ class GraphsController < ApplicationController
 
   def show
     @graph = Graph.find(params[:id])
+    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/#{params[:id]}")
     @datatables = @graph.datatables
     @data_array = []
     @datatables.each do |data|
@@ -17,9 +20,24 @@ class GraphsController < ApplicationController
     end
   end
 
+  def update
+    @graph = Graph.find(params[:id])
+    if @graph.update(graph_params)
+      redirect_to graph_path(@graph.id)
+    else
+      render :new
+    end
+  end
+
   def destroy
     @graph = Graph.find(params[:id])
     @graph.destroy
     redirect_to root_path
+  end
+
+  private
+
+  def graph_params
+    params.require(:graph).permit(:category)
   end
 end
