@@ -1,3 +1,14 @@
+.preview {
+  margin-top: 3rem;
+
+  #canvas {
+    border: 1px solid #eee;
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 1rem;
+  }
+}
+
 .tabcontent {
   display: none;
   padding: 10px;

@@ -1,57 +1,59 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <table class="table">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Label</th>
-            <th scope="col">Value</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @datatables.each do |e| %>
-          <tr>
-            <td scope="row"><%= e.key %></td>
-            <td><%= e.value %></td>
-            <td>
-              <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id), class: "text-secondary" %>
-              <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete, class: " text-danger" %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+<section class="preview">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Label</th>
+              <th scope="col">Value</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @datatables.each do |e| %>
+            <tr>
+              <td scope="row"><%= e.key %></td>
+              <td><%= e.value %></td>
+              <td>
+                <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id), class: "text-secondary" %>
+                <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete, class: " text-danger" %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
-      <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
-        <%= f.input :key, label: 'Label' %>
-        <%= f.input :value %>
-        <%= f.submit 'Add data', class: "btn btn-outline-primary" %>
-      <% end %>
-    </div>
-    <div class="col-sm-8">
-      <!-- charts -->
-      <div id="canvas" class="tabcontent canvas-pie_chart">
-        <%= pie_chart @data_array %>
+        <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
+          <%= f.input :key, label: 'Label' %>
+          <%= f.input :value %>
+          <%= f.submit 'Add data', class: "btn btn-outline-primary" %>
+        <% end %>
       </div>
-      <div id="canvas" class="tabcontent canvas-bar_chart">
-        <%= bar_chart @data_array %>
-      </div>
-      <div id="canvas" class="tabcontent canvas-line_chart">
-        <%= line_chart @data_array %>
-      </div>
+      <div class="col-sm-8">
+        <!-- charts -->
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-pie_chart">
+          <%= pie_chart @data_array %>
+        </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
+          <%= bar_chart @data_array %>
+        </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
+          <%= line_chart @data_array %>
+        </div>
 
-      <!-- radio button -->
-      <%= simple_form_for @graph do |f| %>
-        <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
-        <%= f.input :name, label: 'Name of chart', as: :string %>
-        <%= f.input :x_axis_title, as: :string %>
-        <%= f.input :y_axis_title, as: :string %>
-        <%= f.submit 'Create my chart', class: "btn btn-primary" %>
-      <% end %>
+        <!-- radio button -->
+        <%= simple_form_for @graph do |f| %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :name, label: 'Name of chart', as: :string %>
+          <%= f.input :x_axis_title, as: :string %>
+          <%= f.input :y_axis_title, as: :string %>
+          <%= f.submit 'Create my chart', class: "btn btn-primary" %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- javascript -->
 <script>
