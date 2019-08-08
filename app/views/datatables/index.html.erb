@@ -19,7 +19,7 @@
 </div>
 
 <%= simple_form_for @graph do |f| %>
-  <%= f.input :category, as: :radio_buttons, collection: [['pie', 'pie chart'], ['bar', 'bar chart'], ['line', 'line chart']], label_method: :second, value_method: :first %>
+  <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first %>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
 

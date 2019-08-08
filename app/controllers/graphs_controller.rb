@@ -21,15 +21,11 @@ class GraphsController < ApplicationController
 
   def update
     @graph = Graph.find(params[:id])
-    @graph.update(graph_params)
-
-    # please help me to refactor with the following lines:
-
-    # if @graph.update
-    #   redirect_to graph_datatables_path(graph_id: graph_id)
-    # else
-    #   render :new
-    # end
+    if @graph.update(graph_params)
+      redirect_to graph_path(@graph.id)
+    else
+      render :new
+    end
   end
 
   def destroy
