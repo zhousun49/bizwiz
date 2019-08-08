@@ -1,16 +1,27 @@
-<h1>This is index page for datatable</h1>
+<h1 class="text-center">All data in the Excel</h1>
 
-<% @datatables.each do |e| %>
-<p><%= e.key %>: <%= e.value %></p>
-<% end %>
-<%= @datatables.count %>
+<div class="row">
+  <div class="col-12">
+    <% @datatables.each do |e| %>
+    <p class="text-center"><%= e.key %>: <%= e.value %>
+      <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id) %>
+      <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete %>
+    </p>
+    <% end %>
+  </div>
+</div>
+<%= link_to "Add a data point Or Upload a new file Here", new_graph_datatable_path %>
 
 <div class = "tab">
-  <button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
-  <button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
-  <button onclick="makeChart(event, 'line')" class = "tablinks">Line chart</button>
+  <button onclick="makeChart(event, 'pie')" class="tablinks tab-btn" data-chart="pie">Pie chart</button>
+  <button onclick="makeChart(event, 'bar')" class="tablinks tab-btn" data-chart="bar">Bar chart</button>
+  <button onclick="makeChart(event, 'line')" class="tablinks tab-btn" data-chart="line">Line chart</button>
 </div>
 
+<%= simple_form_for @graph do |f| %>
+  <%= f.input :category, as: :radio_buttons, collection: [['pie', 'pie chart'], ['bar', 'bar chart'], ['line', 'line chart']], label_method: :second, value_method: :first %>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
+<% end %>
 
 <div id="canvas" class="tabcontent canvas-pie">
   <%= pie_chart @data_array %>
@@ -38,8 +49,6 @@
  <% end -%>
 </table>
 
-
-
 <button id="save-btn">Save image</button>
 <%= link_to "See the awesome graphs!", graph_path(@datatables[0].graph_id) %>
 
@@ -59,8 +68,8 @@
 <script>
   function makeChart(e, tableType) {
     var i, tabcontent, tablinks;
-
     tabcontent = document.getElementsByClassName("tabcontent");
+
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
@@ -76,4 +85,18 @@
     <%= @graph.category = "bar" %>
     <%= @graph.save %>
   }
+</script>
+
+<!-- 1. select all "tab-btn", and attach an event listener -->
+<!-- 2. Listen for an click event, and locate the data-chart type -->
+<!-- 3. store the value of that data-chart,  -->
+<script>
+  let btns = document.querySelectorAll('.tab-btn');
+  let chart = ""
+  Array.from(btns).forEach(btn => {
+    btn.addEventListener('click', function(event) {
+      chart = event.target.dataset.chart;
+    });
+  });
+
 </script>

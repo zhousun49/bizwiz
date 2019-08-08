@@ -2,7 +2,7 @@ class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @graph = @datatables.first.graph
-    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/#{params[:graph_id]}/datatables")
+    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/17/datatables/")
     @data_array = []
     @datatables.each do |data|
       @temp_array = []
@@ -16,17 +16,26 @@ class DatatablesController < ApplicationController
     @datatable = Datatable.new
   end
 
+  def create
+    @datatable = Datatable.new(datable_params)
+    @datatable.graph_id = params[:graph_id]
+    if @datatable.update(datable_params)
+      redirect_to graph_datatables_path
+    else
+      render :new
+    end
+  end
+
   def import
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
     @row = []
-
     sheet.each_row_streaming { |r| @row.push(r) }
     if @row[0].last.value.class == String
-display(1)
+      display(1)
     else
-display(0)
+      display(0)
     end
     redirect_to graph_datatables_path(params[:graph_id])
   end
@@ -41,17 +50,30 @@ display(0)
     end
   end
 
+  def edit
+    @datatable = Datatable.find(params[:id])
+  end
+
+  def update
+    @datatable = Datatable.find(params[:id])
+    @graph = @datatable.graph
+    if @datatable.update(datable_params)
+      redirect_to graph_datatables_path
+    else
+      render :edit
+    end
+  end
+
   def destroy
-    @datatables = Datatable.where(graph_id: params[:graph_id])
-    @graph = @datatables.last.graph
-    @datatables.destroy_all
-    @graph.destroy
-    redirect_to root_path
+    @datatable = Datatable.find(params[:id])
+    graph_id = @datatable.graph_id
+    @datatable.destroy
+    redirect_to graph_datatables_path(graph_id: graph_id)
   end
 
   private
 
   def datable_params
-    params.require(:datatable).permit(:data, :key)
+    params.require(:datatable).permit(:value, :key)
   end
 end
