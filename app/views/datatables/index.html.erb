@@ -10,7 +10,14 @@
     <% end %>
   </div>
 </div>
-<%= link_to "Add a data point Or Upload a new file Here", new_graph_datatable_path %>
+<%= form_for @datatable, url: {action: "create"} do |f| %>
+  <%= f.label :key %>
+  <%= f.text_field :key %>
+  <%= f.label :value %>
+  <%= f.text_field :value %>
+  <%= f.submit %>
+<% end %>
+<% @datatables.count %>
 
 <div class = "tab">
   <button onclick="makeChart(event, 'pie')" class="tablinks tab-btn" data-chart="pie">Pie chart</button>
