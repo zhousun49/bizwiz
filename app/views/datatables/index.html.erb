@@ -17,7 +17,6 @@
   <%= f.text_field :value %>
   <%= f.submit %>
 <% end %>
-<% @datatables.count %>
 
 <div class = "tab">
   <button onclick="makeChart(event, 'pie')" class="tablinks tab-btn" data-chart="pie">Pie chart</button>
@@ -41,36 +40,6 @@
 <div id="canvas" class="tabcontent canvas-line">
   <%= line_chart @data_array %>
 </div>
-
-<table class="qrcode">
- <% @qr.modules.each_index do |x| -%>
-   <tr>
-   <% @qr.modules.each_index do |y| -%>
-    <% if @qr.dark?(x,y) -%>
-      <td class="black"/>
-    <% else -%>
-      <td class="white"/>
-    <% end -%>
-   <% end -%>
-   </tr>
- <% end -%>
-</table>
-
-<button id="save-btn">Save image</button>
-<%= link_to "See the awesome graphs!", graph_path(@datatables[0].graph_id) %>
-
-<script>
-  var canvas = document.querySelector("#canvas canvas");
-  var button = document.getElementById("save-btn");
-  button.addEventListener('click', function(){
-    canvas.toBlob(function(blob) {
-      saveAs(blob, "pretty image.png");
-    })
-  });
-  console.log('canvas', canvas)
-  console.log('button', button)
-</script>
-
 
 <script>
   function makeChart(e, tableType) {
