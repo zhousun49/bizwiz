@@ -26,11 +26,12 @@
 
 <%= simple_form_for @graph do |f| %>
   <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first %>
+  <%= f.input :name, as: :string %>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
 
 <div id="canvas" class="tabcontent canvas-pie">
-  <%= pie_chart @data_array %>
+  <%= pie_chart @data_array, donut: true, title: @graph.name %>
 </div>
 
 <div id="canvas" class="tabcontent canvas-bar">
