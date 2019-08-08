@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_082337) do
+ActiveRecord::Schema.define(version: 2019_08_08_101204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 2019_08_05_082337) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "x_axis_title"
+    t.string "y_axis_title"
+    t.boolean "legend", default: true
   end
 
   add_foreign_key "datatables", "graphs"
