@@ -7,11 +7,11 @@
 
 <div id="canvas">
   <% if @graph.category.include?('bar') %>
-  <%= bar_chart @data_array, title: @graph.name %>
+  <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
   <% elsif @graph.category.include?('line') %>
-  <%= line_chart @data_array, title: @graph.name %>
+  <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
   <% else %>
-  <%= pie_chart @data_array, title: @graph.name %>
+  <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
   <% end %>
 </div>
 

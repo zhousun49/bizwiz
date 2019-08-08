@@ -38,6 +38,6 @@ class GraphsController < ApplicationController
   private
 
   def graph_params
-    params.require(:graph).permit(:category, :name)
+    params.require(:graph).permit(:category, :name, :x_axis_title, :y_axis_title)
   end
 end
