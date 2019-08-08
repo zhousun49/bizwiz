@@ -1,0 +1,21 @@
+.result {
+  margin-top: 3rem;
+
+  #canvas {
+    border: 1px solid #eee;
+    padding: 10px;
+    background: #fff;
+  }
+}
+
+.result-btns {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.btn.dropdown-toggle {
+  box-shadow: none;
+  text-decoration: none;
+  padding-left: 0;
+  padding-right: 0;
+}
