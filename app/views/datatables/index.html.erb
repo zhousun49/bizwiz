@@ -13,20 +13,22 @@
 <%= link_to "Add a data point Or Upload a new file Here", new_graph_datatable_path %>
 <% @datatables.count %>
 
-<button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
-<button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
-<button onclick="makeChart(event, 'line')" class = "tablinks">Line chart</button>
+<div class = "tab">
+  <button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
+  <button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
+  <button onclick="makeChart(event, 'line')" class = "tablinks">Line chart</button>
+</div>
 
 
-<div id="canvas" class="tabcontent">
+<div id="canvas" class="tabcontent canvas-pie">
   <%= pie_chart @data_array %>
 </div>
 
-<div id="canvas" class="tabcontent">
+<div id="canvas" class="tabcontent canvas-bar">
   <%= bar_chart @data_array %>
 </div>
 
-<div id="canvas" class="tabcontent">
+<div id="canvas" class="tabcontent canvas-line">
   <%= line_chart @data_array %>
 </div>
 
@@ -63,15 +65,23 @@
 
 
 <script>
-  function makeChart(argument) {
+  function makeChart(e, tableType) {
+    var i, tabcontent, tablinks;
 
     tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
 
     tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-    document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    var chartTypeClass = ".canvas-" + tableType
+    console.log(chartTypeClass.split('-')[1])
+    document.querySelector(chartTypeClass).style.display = "block";
+    e.currentTarget.className += " active";
+    <%= @graph.category = "bar" %>
+    <%= @graph.save %>
   }
 </script>
