@@ -1,9 +1,9 @@
 <nav class="navbar fixed-top p-3 bg-white shadow-sm">
   <div class="container d-flex justify-content-between">
-    <a class="logo" href="#">
-      <span>BizWiz</span>
-      <span>Charts made easy</span>
-    </a>
+    <%= link_to root_path, class: "logo" do %>
+      <%= content_tag :span, "BizWiz" %>
+      <%= content_tag :span, "Charts made easy" %>
+    <% end %>
     <a href="#" class="btn btn-primary">Get Started</a>
   </div>
 </nav>
