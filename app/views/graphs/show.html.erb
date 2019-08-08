@@ -5,26 +5,40 @@
 <% chartType = @graph.category + "_chart" %>
 <% p chartType %>
 
+<div id="canvas">
+  <% if @graph.category.include?('bar') %>
+  <%= bar_chart @data_array %>
+  <% elsif @graph.category.include?('line') %>
+  <%= line_chart @data_array %>
+  <% else %>
+  <%= pie_chart @data_array %>
+  <% end %>
+</div>
 
+<table class="qrcode">
+ <% @qr.modules.each_index do |x| -%>
+   <tr>
+   <% @qr.modules.each_index do |y| -%>
+    <% if @qr.dark?(x,y) -%>
+      <td class="black"/>
+    <% else -%>
+      <td class="white"/>
+    <% end -%>
+   <% end -%>
+   </tr>
+ <% end -%>
+</table>
 
-<!--
+<button id="save-btn">Save image</button>
+
 <script>
-  function makeChart(e, tableType) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    var chartTypeClass = ".canvas-" + tableType
-    console.log(chartTypeClass.split('-')[1])
-    document.querySelector(chartTypeClass).style.display = "block";
-    e.currentTarget.className += " active";
-  }
-</script> -->
-
+  var canvas = document.querySelector("#canvas canvas");
+  var button = document.getElementById("save-btn");
+  button.addEventListener('click', function(){
+    canvas.toBlob(function(blob) {
+      saveAs(blob, "pretty image.png");
+    })
+  });
+  console.log('canvas', canvas)
+  console.log('button', button)
+</script>
