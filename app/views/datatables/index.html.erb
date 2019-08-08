@@ -26,6 +26,9 @@
 
 <%= simple_form_for @graph do |f| %>
   <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first %>
+  <%= f.input :name, as: :string %>
+  <%= f.input :x_axis_title, as: :string %>
+  <%= f.input :y_axis_title, as: :string %>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
 
