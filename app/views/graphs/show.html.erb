@@ -1,8 +1,24 @@
 <h1>Show page for graph</h1>
 
-<%= link_to "Go Back", graph_datatable_path(@graph), method: :DELETE %>
 
-<p><%= @graph.style %></p>
-<div>
-  <%= bar_chart @data_array %>
-</div>
+<!-- want this to pull the chartType variable from datatables/index -->
+<script>
+    const makeChart = (e, chartType) => {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    var chartTypeClass = ".canvas-" + tableType
+
+    document.querySelector(chartTypeClass).style.display = "block";
+    e.currentTarget.className += " active";
+    }
+</script>
+<%= link_to "Go Back", graph_datatable_path(@graph), method: :DELETE %>

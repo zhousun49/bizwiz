@@ -16,4 +16,9 @@ class GraphsController < ApplicationController
       @data_array << @temp_array
     end
   end
+
+  def update
+    @graph = Graph.find(params[:id])
+    @graph.save
+  end
 end

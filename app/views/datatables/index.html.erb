@@ -6,7 +6,7 @@
 <%= @datatables.count %>
 
 <div class = "tab">
-  <button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
+  <button onclick="makeChart(event, 'pie'); setVariable(event, 'pie')" class = "tablinks">Pie chart</button>
   <button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
   <button onclick="makeChart(event, 'line')" class = "tablinks">Line chart</button>
 </div>
@@ -41,7 +41,9 @@
 
 
 <button id="save-btn">Save image</button>
-<%= link_to "See the awesome graphs!", graph_path(@datatables[0].graph_id) %>
+<%= link_to "save", graph_path(@graph), method: :PATCH %>
+<%= link_to "See the awesome graph!", graph_path(@datatables[0].graph_id) %>
+
 
 <script>
   var canvas = document.querySelector("#canvas canvas");
@@ -57,7 +59,7 @@
 
 
 <script>
-  function makeChart(e, tableType) {
+    const makeChart = (e, tableType) => {
     var i, tabcontent, tablinks;
 
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -70,10 +72,15 @@
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     var chartTypeClass = ".canvas-" + tableType
-    console.log(chartTypeClass.split('-')[1])
+
     document.querySelector(chartTypeClass).style.display = "block";
     e.currentTarget.className += " active";
-    <%= @graph.category = "bar" %>
-    <%= @graph.save %>
-  }
+    }
+</script>
+
+<script>
+  const setVariable = (e, chartType) => {
+  console.log (chartType)
+}
+
 </script>
