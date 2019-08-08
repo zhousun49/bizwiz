@@ -44,7 +44,7 @@ class DatatablesController < ApplicationController
     @row[integer..-1].each { |e| key.push(e[0].value)}
     @row[integer..-1].each_with_index do |e, i|
       e[1..-1].each do |v|
-        @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) || (key[i].nil? == false)
+        @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) && (key[i].nil? == false)
       end
     end
   end
