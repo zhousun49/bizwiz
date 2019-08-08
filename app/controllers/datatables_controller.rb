@@ -15,6 +15,16 @@ class DatatablesController < ApplicationController
     @datatable = Datatable.new
   end
 
+  def create
+    @datatable = Datatable.new(datable_params)
+    @datatable.graph_id = params[:graph_id]
+    if @datatable.update(datable_params)
+      redirect_to graph_datatables_path
+    else
+      render :new
+    end
+  end
+
   def import
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
