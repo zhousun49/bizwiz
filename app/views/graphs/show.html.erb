@@ -1,3 +1,8 @@
 <h1>Show page for graph</h1>
 
 <%= link_to "Go Back", graph_datatable_path(@graph), method: :DELETE %>
+
+<p><%= @graph.style %></p>
+<div>
+  <%= bar_chart @data_array %>
+</div>
