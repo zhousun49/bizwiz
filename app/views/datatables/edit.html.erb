@@ -1,9 +1,21 @@
-<h1>This is the edit data page</h1>
-
-<%= form_for @datatable, url: {action: "update"} do |f| %>
-  <%= f.label :key%>
-  <%= f.text_field :key %>
-  <%= f.label :value%>
-  <%= f.text_field :value %>
-  <%= f.submit %>
-<% end %>
+<section class="editor">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 offset-sm-2">
+        <%= link_to 'Back to chart preview', graph_datatables_path, class: "text-secondary back-btn" %>
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h2>Edit chart data</h2>
+          </div>
+          <div class="card-body">
+            <%= simple_form_for @datatable, url: {action: "update"} do |f| %>
+              <%= f.input :key, label: 'Label' %>
+              <%= f.input :value %>
+              <%= f.submit 'Update data', class: "btn btn-outline-primary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
