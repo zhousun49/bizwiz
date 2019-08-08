@@ -2,6 +2,7 @@ class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @datatable = Datatable.new
+    @graph = @datatables.first.graph
     @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/17/datatables/")
     @data_array = []
     @datatables.each do |data|
