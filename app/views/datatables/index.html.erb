@@ -17,7 +17,6 @@
   <%= f.text_field :value %>
   <%= f.submit %>
 <% end %>
-<% @datatables.count %>
 
 <!-- radio button -->
 <%= simple_form_for @graph do |f| %>
@@ -35,6 +34,7 @@
 <div id="canvas" class="tabcontent canvas-line_chart">
   <%= line_chart @data_array %>
 </div>
+
 
 <!-- javascript -->
 <script>
