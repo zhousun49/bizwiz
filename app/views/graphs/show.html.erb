@@ -1,44 +1,48 @@
-<h1>Show page for graph</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <%= link_to "Restart", graph_path(@graph), method: :DELETE %>
 
-<%= link_to "Restart", graph_path(@graph), method: :DELETE %>
+      <% chartType = @graph.category + "_chart" %>
+      <% p chartType %>
 
-<% chartType = @graph.category + "_chart" %>
-<% p chartType %>
+      <div id="canvas">
+        <% if @graph.category.include?('bar') %>
+        <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+        <% elsif @graph.category.include?('line') %>
+        <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+        <% else %>
+        <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+        <% end %>
+      </div>
 
-<div id="canvas">
-  <% if @graph.category.include?('bar') %>
-  <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
-  <% elsif @graph.category.include?('line') %>
-  <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
-  <% else %>
-  <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
-  <% end %>
+      <table class="qrcode">
+       <% @qr.modules.each_index do |x| -%>
+         <tr>
+         <% @qr.modules.each_index do |y| -%>
+          <% if @qr.dark?(x,y) -%>
+            <td class="black"/>
+          <% else -%>
+            <td class="white"/>
+          <% end -%>
+         <% end -%>
+         </tr>
+       <% end -%>
+      </table>
+
+      <button id="save-btn">Save image</button>
+    </div>
+  </div>
 </div>
-
-<table class="qrcode">
- <% @qr.modules.each_index do |x| -%>
-   <tr>
-   <% @qr.modules.each_index do |y| -%>
-    <% if @qr.dark?(x,y) -%>
-      <td class="black"/>
-    <% else -%>
-      <td class="white"/>
-    <% end -%>
-   <% end -%>
-   </tr>
- <% end -%>
-</table>
-
-<button id="save-btn">Save image</button>
 
 <script>
   var canvas = document.querySelector("#canvas canvas");
   var button = document.getElementById("save-btn");
   button.addEventListener('click', function(){
     canvas.toBlob(function(blob) {
-      saveAs(blob, "pretty image.png");
+      saveAs(blob, "chart.png");
     })
   });
-  console.log('canvas', canvas)
-  console.log('button', button)
+  // console.log('canvas', canvas);
+  // console.log('button', button);
 </script>
