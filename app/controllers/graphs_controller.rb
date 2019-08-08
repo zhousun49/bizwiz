@@ -1,4 +1,6 @@
 class GraphsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
     @graph = Graph.new
     @graph.save
@@ -17,9 +19,28 @@ class GraphsController < ApplicationController
     end
   end
 
+  def update
+    @graph = Graph.find(params[:id])
+    @graph.update(graph_params)
+
+    # please help me to refactor with the following lines:
+
+    # if @graph.update
+    #   redirect_to graph_datatables_path(graph_id: graph_id)
+    # else
+    #   render :new
+    # end
+  end
+
   def destroy
     @graph = Graph.find(params[:id])
     @graph.destroy
     redirect_to root_path
+  end
+
+  private
+
+  def graph_params
+    params.require(:graph).permit(:category)
   end
 end
