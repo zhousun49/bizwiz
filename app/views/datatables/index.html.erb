@@ -18,29 +18,25 @@
   <%= f.submit %>
 <% end %>
 
-<div class = "tab">
-  <button onclick="makeChart(event, 'pie')" class="tablinks tab-btn" data-chart="pie">Pie chart</button>
-  <button onclick="makeChart(event, 'bar')" class="tablinks tab-btn" data-chart="bar">Bar chart</button>
-  <button onclick="makeChart(event, 'line')" class="tablinks tab-btn" data-chart="line">Line chart</button>
-</div>
-
+<!-- radio button -->
 <%= simple_form_for @graph do |f| %>
-  <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first %>
+  <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first, class: "tablinks" %>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
 
-<div id="canvas" class="tabcontent canvas-pie">
+<!-- charts -->
+<div id="canvas" class="tabcontent canvas-pie_chart">
   <%= pie_chart @data_array %>
 </div>
-
-<div id="canvas" class="tabcontent canvas-bar">
+<div id="canvas" class="tabcontent canvas-bar_chart">
   <%= bar_chart @data_array %>
 </div>
-
-<div id="canvas" class="tabcontent canvas-line">
+<div id="canvas" class="tabcontent canvas-line_chart">
   <%= line_chart @data_array %>
 </div>
 
+
+<!-- javascript -->
 <script>
   function makeChart(e, tableType) {
     var i, tabcontent, tablinks;
@@ -55,24 +51,17 @@
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     var chartTypeClass = ".canvas-" + tableType
-    console.log(chartTypeClass.split('-')[1])
     document.querySelector(chartTypeClass).style.display = "block";
     e.currentTarget.className += " active";
-    <%= @graph.category = "bar" %>
-    <%= @graph.save %>
   }
-</script>
 
-<!-- 1. select all "tab-btn", and attach an event listener -->
-<!-- 2. Listen for an click event, and locate the data-chart type -->
-<!-- 3. store the value of that data-chart,  -->
-<script>
-  let btns = document.querySelectorAll('.tab-btn');
-  let chart = ""
-  Array.from(btns).forEach(btn => {
+  let buttons = document.querySelectorAll('input.radio_buttons');
+  Array.from(buttons).forEach(btn => {
     btn.addEventListener('click', function(event) {
-      chart = event.target.dataset.chart;
+      console.log("radio button clicked!", event)
+      makeChart(event, event.originalTarget.value)
     });
   });
-
 </script>
+
+
