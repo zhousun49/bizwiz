@@ -20,7 +20,6 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
     @row = []
-
     sheet.each_row_streaming { |r| @row.push(r) }
     if @row[0].last.value.class == String
       display(1)
@@ -40,17 +39,30 @@ class DatatablesController < ApplicationController
     end
   end
 
+  def edit
+    @datatable = Datatable.find(params[:id])
+  end
+
+  def update
+    @datatable = Datatable.find(params[:id])
+    @graph = @datatable.graph
+    if @datatable.update(datable_params)
+      redirect_to graph_datatables_path
+    else
+      render :edit
+    end
+  end
+
   def destroy
-    @datatables = Datatable.where(graph_id: params[:graph_id])
-    @graph = @datatables.last.graph
-    @datatables.destroy_all
-    @graph.destroy
-    redirect_to root_path
+    @datatable = Datatable.find(params[:id])
+    graph_id = @datatable.graph_id
+    @datatable.destroy
+    redirect_to graph_datatables_path(graph_id: graph_id)
   end
 
   private
 
   def datable_params
-    params.require(:datatable).permit(:data, :key)
+    params.require(:datatable).permit(:value, :key)
   end
 end

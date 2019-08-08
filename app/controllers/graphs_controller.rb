@@ -8,4 +8,10 @@ class GraphsController < ApplicationController
   def show
     @graph = Graph.find(params[:id])
   end
+
+  def destroy
+    @graph = Graph.find(params[:id])
+    @graph.destroy
+    redirect_to root_path
+  end
 end

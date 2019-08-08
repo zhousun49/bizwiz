@@ -1,9 +1,17 @@
-<h1>This is index page for datatable</h1>
+<h1 class="text-center">All data in the Excel</h1>
 
-<% @datatables.each do |e| %>
-<p><%= e.key %>: <%= e.value %></p>
-<% end %>
-<%= @datatables.count %>
+<div class="row">
+  <div class="col-12">
+    <% @datatables.each do |e| %>
+    <p class="text-center"><%= e.key %>: <%= e.value %>
+      <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id) %>
+      <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete %>
+    </p>
+    <% end %>
+  </div>
+</div>
+<%= link_to "Did't find the data you are looking for? Add it here", new_graph_datatable_path %>
+<% @datatables.count %>
 
 <button onclick="makeChart(event, 'pie')" class = "tablinks">Pie chart</button>
 <button onclick="makeChart(event, 'bar')" class = "tablinks">Bar chart</button>
