@@ -11,3 +11,11 @@
     </div>
   </div>
 </section>
+
+<%= form_for @datatable, url: {action: "create"} do |f| %>
+  <%= f.label :key %>
+  <%= f.text_field :key %>
+  <%= f.label :value %>
+  <%= f.text_field :value %>
+  <%= f.submit %>
+<% end %>

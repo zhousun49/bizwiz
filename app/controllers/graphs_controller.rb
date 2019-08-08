@@ -16,4 +16,10 @@ class GraphsController < ApplicationController
       @data_array << @temp_array
     end
   end
+
+  def destroy
+    @graph = Graph.find(params[:id])
+    @graph.destroy
+    redirect_to root_path
+  end
 end

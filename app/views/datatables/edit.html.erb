@@ -1,0 +1,9 @@
+<h1>This is the edit data page</h1>
+
+<%= form_for @datatable, url: {action: "update"} do |f| %>
+  <%= f.label :key%>
+  <%= f.text_field :key %>
+  <%= f.label :value%>
+  <%= f.text_field :value %>
+  <%= f.submit %>
+<% end %>
