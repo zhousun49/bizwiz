@@ -33,7 +33,7 @@
       <div class="col-sm-8">
         <!-- charts -->
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-pie_chart">
-          <%= pie_chart @data_array %>
+          <%= pie_chart @pie_array , suffix: "%" %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
           <%= bar_chart @data_array %>

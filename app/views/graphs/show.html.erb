@@ -28,7 +28,7 @@
           <% elsif @graph.category.include?('line') %>
           <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
           <% else %>
-          <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <%= pie_chart @pie_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, suffix: "%" %>
           <% end %>
         </div>
 
