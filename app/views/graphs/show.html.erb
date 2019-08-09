@@ -26,7 +26,7 @@
           <% if @graph.category.include?('bar') %>
           <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$" %>
           <% elsif @graph.category.include?('line') %>
-          <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
+          <%= area_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
           <% elsif @graph.category.include?('pie') %>
           <%= pie_chart @pie_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
           <% elsif @graph.category.include?('geo') %>
