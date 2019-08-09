@@ -23,7 +23,6 @@
             <% end %>
           </tbody>
         </table>
-
         <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
           <%= f.input :key, label: 'Label' %>
           <%= f.input :value %>
@@ -41,7 +40,6 @@
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
           <%= line_chart @data_array %>
         </div>
-
         <!-- radio button -->
         <%= simple_form_for @graph do |f| %>
           <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
