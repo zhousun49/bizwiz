@@ -1,78 +1,81 @@
-<h1 class="text-center">All data in the Excel</h1>
+<section class="preview">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Label</th>
+              <th scope="col">Value</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @datatables.each do |e| %>
+            <tr>
+              <td scope="row"><%= e.key %></td>
+              <td><%= e.value %></td>
+              <td>
+                <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id), class: "text-secondary" %>
+                <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete, class: " text-danger" %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
-<div class="row">
-  <div class="col-12">
-    <% @datatables.each do |e| %>
-    <p class="text-center"><%= e.key %>: <%= e.value %>
-      <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id) %>
-      <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete %>
-    </p>
-    <% end %>
+        <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
+          <%= f.input :key, label: 'Label' %>
+          <%= f.input :value %>
+          <%= f.submit 'Add data', class: "btn btn-outline-primary" %>
+        <% end %>
+      </div>
+      <div class="col-sm-8">
+        <!-- charts -->
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-pie_chart">
+          <%= pie_chart @data_array %>
+        </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
+          <%= bar_chart @data_array %>
+        </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
+          <%= line_chart @data_array %>
+        </div>
+
+        <!-- radio button -->
+        <%= simple_form_for @graph do |f| %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :name, label: 'Name of chart', as: :string %>
+          <%= f.input :x_axis_title, as: :string %>
+          <%= f.input :y_axis_title, as: :string %>
+          <%= f.submit 'Create my chart', class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
   </div>
-</div>
-<%= form_for @datatable, url: {action: "create"} do |f| %>
-  <%= f.label :key %>
-  <%= f.text_field :key %>
-  <%= f.label :value %>
-  <%= f.text_field :value %>
-  <%= f.submit %>
-<% end %>
+</section>
 
-<div class = "tab">
-  <button onclick="makeChart(event, 'pie')" class="tablinks tab-btn" data-chart="pie">Pie chart</button>
-  <button onclick="makeChart(event, 'bar')" class="tablinks tab-btn" data-chart="bar">Bar chart</button>
-  <button onclick="makeChart(event, 'line')" class="tablinks tab-btn" data-chart="line">Line chart</button>
-</div>
-
-<%= simple_form_for @graph do |f| %>
-  <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'pie chart'], ['bar_chart', 'bar chart'], ['line_chart', 'line chart']], label_method: :second, value_method: :first %>
-  <%= f.submit "Submit", class: "btn btn-primary" %>
-<% end %>
-
-<div id="canvas" class="tabcontent canvas-pie">
-  <%= pie_chart @data_array %>
-</div>
-
-<div id="canvas" class="tabcontent canvas-bar">
-  <%= bar_chart @data_array %>
-</div>
-
-<div id="canvas" class="tabcontent canvas-line">
-  <%= line_chart @data_array %>
-</div>
-
+<!-- javascript -->
 <script>
-  function makeChart(e, tableType) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
+  function displayChart(type) {
+    let i, tabcontent;
+    tabcontent = document.querySelectorAll(".tabcontent");
 
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
 
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    var chartTypeClass = ".canvas-" + tableType
-    console.log(chartTypeClass.split('-')[1])
-    document.querySelector(chartTypeClass).style.display = "block";
-    e.currentTarget.className += " active";
-    <%= @graph.category = "bar" %>
-    <%= @graph.save %>
+    let chartType = ".canvas-" + type
+    document.querySelector(chartType).style.display = "block";
   }
-</script>
 
-<!-- 1. select all "tab-btn", and attach an event listener -->
-<!-- 2. Listen for an click event, and locate the data-chart type -->
-<!-- 3. store the value of that data-chart,  -->
-<script>
-  let btns = document.querySelectorAll('.tab-btn');
-  let chart = ""
-  Array.from(btns).forEach(btn => {
+  let buttons = document.querySelectorAll('input.radio_buttons');
+  Array.from(buttons).forEach(btn => {
     btn.addEventListener('click', function(event) {
-      chart = event.target.dataset.chart;
+      // console.log("radio button clicked!", event)
+      displayChart(event.target.value)
     });
   });
-
 </script>
+
+

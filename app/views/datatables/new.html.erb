@@ -1,13 +1,40 @@
 <section class="uploader">
   <div class="container">
     <div class="row">
-      <div class="col-12">
-        <h1>Upload here</h1>
+      <div class="col-sm-12 col-md-8 offset-md-2">
+        <div class="uploader-title">
+          <h2>Create your chart</h2>
+          <p>Start by uploading your file. We accept .xlsx and .csv files</p>
+        </div>
         <%= form_tag import_graph_datatables_path, multipart: true do %>
           <%= file_field_tag :file %>
-          <%= submit_tag "Import" %>
+          <label for="file">
+            <img src="<%= image_path "upload-icon.svg" %>" alt="">
+            <span class="btn btn-outline-dark">Select a file from your device</span>
+          </label>
+          <%= submit_tag "Upload file", class: "btn btn-primary" %>
         <% end %>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  var inputs = document.querySelectorAll( '#file' );
+  Array.prototype.forEach.call( inputs, function( input )
+  {
+    var label  = input.nextElementSibling,
+      labelVal = label.innerHTML;
+
+    input.addEventListener( 'change', function( e )
+    {
+      var fileName = '';
+      fileName = e.target.value.split( '\\' ).pop();
+
+      if( fileName )
+        label.querySelector( 'span' ).innerHTML = fileName;
+      else
+        label.innerHTML = labelVal;
+    });
+  });
+</script>
