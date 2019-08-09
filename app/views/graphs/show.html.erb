@@ -26,19 +26,19 @@
           <% if @graph.category.include?('bar') %>
           <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$" %>
           <% elsif @graph.category.include?('line') %>
-          <%= area_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"  %>
-          <% else %>
+          <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
+          <% elsif @graph.category.include?('pie') %>
           <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
+          <% elsif @graph.category.include?('geo') %>
+          <%= geo_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
           <% end %>
         </div>
 
         <div class="result-btns">
-          <%= link_to "Make a new chart", graph_path(@graph), method: :DELETE, class: "btn btn-outline-primary" %>
-
+          <%= link_to "Edit chart", graph_datatables_path(@graph), class: "btn btn-outline-primary" %>
+          <%= link_to "Make a new chart", graph_path(@graph), method: :DELETE, class: "btn btn-outline-primary", data:{ confirm: "Your current chart and data will be deleted.\n\nAre you sure?"} %>
           <button id="save-btn" class="btn btn-primary">Download chart as an image</button>
         </div>
-
-
       </div>
     </div>
   </div>
