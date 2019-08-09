@@ -23,7 +23,6 @@
             <% end %>
           </tbody>
         </table>
-
         <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
           <%= f.input :key, label: 'Label' %>
           <%= f.input :value %>
@@ -47,7 +46,7 @@
 
         <!-- radio button -->
         <%= simple_form_for @graph do |f| %>
-          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart'], ['geo_chart', 'geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
           <%= f.input :name, label: 'Name of chart', as: :string %>
           <%= f.input :x_axis_title, as: :string %>
           <%= f.input :y_axis_title, as: :string %>
