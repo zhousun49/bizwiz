@@ -33,18 +33,18 @@
       <div class="col-sm-8">
         <!-- charts -->
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-pie_chart">
-          <%= pie_chart @data_array %>
+          <%= pie_chart @data_array, donut: true, legend: "bottom", thousands: ",", label: "Value", prefix: "$" %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
           <%= bar_chart @data_array %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
-          <%= line_chart @data_array %>
+          <%= area_chart @data_array %>
         </div>
 
         <!-- radio button -->
         <%= simple_form_for @graph do |f| %>
-          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Line chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Donut Chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Area chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
           <%= f.input :name, label: 'Name of chart', as: :string %>
           <%= f.input :x_axis_title, as: :string %>
           <%= f.input :y_axis_title, as: :string %>
