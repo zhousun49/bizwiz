@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="92px" height="80px" viewBox="0 0 92 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>uploadIcon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Contact" transform="translate(-659.000000, -481.000000)">
+            <g id="uploader" transform="translate(460.000000, 380.000000)">
+                <g id="uploadIcon" transform="translate(188.000000, 102.000000)">
+                    <g id="ic/note_add/grey600" opacity="0.357133154" transform="translate(85.406449, 22.234876) rotate(-345.000000) translate(-85.406449, -22.234876) translate(70.406449, 3.234876)" fill-rule="nonzero" stroke="#979797" stroke-dasharray="1,1" stroke-width="2">
+                        <g id="ic_note_add_24px" transform="translate(-0.000000, -0.000000)">
+                            <path d="M18.75,6.18283202e-13 L3.75,6.18283202e-13 C1.6875,6.18283202e-13 0.01875,1.71 0.01875,3.8 L-1.2947976e-14,34.2 C-1.2947976e-14,36.29 1.66875,38 3.73125,38 L26.25,38 C28.3125,38 30,36.29 30,34.2 L30,11.4 L18.75,6.18283202e-13 Z M17.0280273,12.6842871 L17.0280273,2.68428709 L27.0280273,12.6842871 L17.0280273,12.6842871 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                    <g id="ic/note_add/grey600-copy" transform="translate(32.000000, 54.000000) rotate(-360.000000) translate(-32.000000, -54.000000) translate(0.000000, 22.000000)">
+                        <g id="ic_note_add_24px">
+                            <polygon id="Shape" points="0 0 64 0 64 64 0 64"></polygon>
+                            <path d="M37.875,4 L16.375,4 C13.41875,4 11.026875,6.385 11.026875,9.3 L11,51.7 C11,54.615 13.391875,57 16.348125,57 L48.625,57 C51.58125,57 54,54.615 54,51.7 L54,19.9 L37.875,4 Z M43,41.125 L35.125,41.125 L35.125,49 L29.875,49 L29.875,41.125 L22,41.125 L22,35.875 L29.875,35.875 L29.875,28 L35.125,28 L35.125,35.875 L43,35.875 L43,41.125 Z M35,23 L35,8 L50,23 L35,23 Z" id="Shape" fill="#919EAB" fill-rule="nonzero"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

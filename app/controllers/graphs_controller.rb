@@ -9,7 +9,7 @@ class GraphsController < ApplicationController
 
   def show
     @graph = Graph.find(params[:id])
-    @qr = RQRCode::QRCode.new("bizwiz.herokuapp.com/graphs/#{params[:id]}")
+    @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
     @datatables = @graph.datatables
     @data_array = []
     @datatables.each do |data|
