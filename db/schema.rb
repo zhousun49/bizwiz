@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_08_101204) do
+ActiveRecord::Schema.define(version: 2019_08_12_073951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "charts", force: :cascade do |t|
+    t.bigint "graph_id"
+    t.string "name"
+    t.string "category"
+    t.text "style"
+    t.string "img_url"
+    t.string "x_axis_title"
+    t.string "y_axis_title"
+    t.boolean "legend", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["graph_id"], name: "index_charts_on_graph_id"
+  end
 
   create_table "datatables", force: :cascade do |t|
     t.float "value"
@@ -21,6 +35,7 @@ ActiveRecord::Schema.define(version: 2019_08_08_101204) do
     t.bigint "graph_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sheet_id"
     t.index ["graph_id"], name: "index_datatables_on_graph_id"
   end
 
@@ -31,19 +46,11 @@ ActiveRecord::Schema.define(version: 2019_08_08_101204) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.string "x_axis_title"
     t.string "y_axis_title"
     t.boolean "legend", default: true
-    t.index ["user_id"], name: "index_graphs_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+  add_foreign_key "charts", "graphs"
   add_foreign_key "datatables", "graphs"
-  add_foreign_key "graphs", "users"
 end
