@@ -30,15 +30,18 @@ class DatatablesController < ApplicationController
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
+
+      # Create a new graph for each Excel sheet
       @graph = Graph.new({
         collection_id: params[:collection_id]
       })
       @graph.save
+
       sheet = spreadsheet.sheet(name)
       @row = []
       sheet.each_row_streaming { |r| @row.push(r) }
 
-      # If the last cell of the first row in the Excel is a string
+      # If the last cell of the first row in the Excel is a string, begin collecting the data from the next row instead.
       if @row[0].last.value.class == String
         display(1)
       else
