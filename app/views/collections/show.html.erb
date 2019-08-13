@@ -1,6 +1,30 @@
-<h1>Your graphs</h1>
-<% @graphs.each do | graph | %>
-<%= link_to 'Graph', graph_datatables_path(graph) %>
+<div class="collection">
+  <div class="container">
+    <h2>All Charts</h2>
+    <div class="row">
+        <% @graphs.each_with_index do | graph, i | %>
+          <div class="col-sm-4">
 
-<% end %>
+            <% if graph.category.nil? %>
+              <p>No preview available</p>
+            <% elsif graph.category.include?('bar') %>
+              <%= bar_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$" %>
+            <% elsif graph.category.include?('line') %>
+              <%= area_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$"   %>
+            <% elsif graph.category.include?('pie') %>
+              <%= pie_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
+            <% elsif graph.category.include?('geo') %>
+              <%= geo_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title %>
+            <% end %>
 
+            <%= link_to graph_datatables_path(graph) do %>
+            <div class="collection-card">
+              <%= graph.name.nil? ? "Graph #{i + 1}" : graph.name %>
+            </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
