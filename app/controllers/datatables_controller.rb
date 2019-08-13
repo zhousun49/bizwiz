@@ -3,18 +3,41 @@ class DatatablesController < ApplicationController
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @datatable = Datatable.new
     @graph = @datatables.first.graph
-    total_value = 0
-    @datatables.each { |e| total_value += e.value }
-    @data_array = []
+    # total_value = 0
+    # @datatables.each { |e| total_value += e.value }
+    @data_arrays = []
     @pie_array = []
-    @datatables.each do |data|
+    @data_series = @datatables.group_by { |data| data[:series] }
+    @data_series.each do |k, v|
+      arr = Array.new
+      v.each do |data|
+        m_arr = Array.new
+        m_arr << data.column
+        m_arr << data.value
+        arr << m_arr
+      end
+      @data_arrays << arr
+    end
+
+    @series_name = []
+    @data_series.each do |k, v|
+      @series_name << k
+    end
+
+    @options = []
+    @series_name.each_with_index do |n, i|
+      @options << {name: n, data: @data_arrays[i]}
+    end
+
+
       # @temp_array = []
-      # @temp_array << data.key
+      # @temp_array << data.series
       # @temp_array << data.value
       # @data_array << @temp_array
-      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
-      @data_array << [data.key, data.value]
-    end
+      # @pie_array << [data.series, (data.value * 100 / total_value).round(1)]
+      # @data_array << [data.series, data.value]
+
+
   end
 
   def new
@@ -30,10 +53,6 @@ class DatatablesController < ApplicationController
       render :new
     end
   end
-
-# @row is an array of Cell objects, each which has a
-# cell value, a style, a cell type (numeric or formula) a coordinate [row, column], and a value
-# which is the same as cell-value. We want to group arrays based on row coordinate.
 
   def import
     @datatable = params[:file]
@@ -59,7 +78,6 @@ class DatatablesController < ApplicationController
         @datatable = Datatable.create({series: @series[i], column: @columns[ii], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) && (@series[i].nil? == false)
       end
     end
-    raise
   end
 
   def edit
@@ -86,6 +104,6 @@ class DatatablesController < ApplicationController
   private
 
   def datable_params
-    params.require(:datatable).permit(:value, :key)
+    params.require(:datatable).permit(:value, :column, :series)
   end
 end
