@@ -2,6 +2,8 @@ class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @graph = @datatables.first.graph
+    @datatable = Datatable.new
+    # @datatable.graph_id = params[:graph_id]
     total_value = 0
     @datatables.each { |e| total_value += e.value }
     @data_array = []
@@ -17,9 +19,9 @@ class DatatablesController < ApplicationController
   end
 
   def create
-    @datatable = Datatable.new(datable_params)
+    @datatable = Datatable.new(datatable_params)
     @datatable.graph_id = params[:graph_id]
-    if @datatable.update(datable_params)
+    if @datatable.update(datatable_params)
       redirect_to graph_datatables_path
     else
       render :new
@@ -102,7 +104,7 @@ class DatatablesController < ApplicationController
 
   private
 
-  def datable_params
-    params.require(:datatable).permit(:value, :key)
+  def datatable_params
+    params.require(:datatable).permit(:value, :key, :graph_id)
   end
 end

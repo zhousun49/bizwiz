@@ -8,16 +8,23 @@ class GraphsController < ApplicationController
   end
 
   def show
-    @graph = Graph.find(params[:id])
-    @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
-    @datatables = @graph.datatables
-    @data_array = []
-    @pie_array = []
-    total_value = 0
-    @datatables.each { |e| total_value += e.value }
-    @datatables.each do |data|
-      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
-      @data_array << [data.key, data.value]
+    @graph = Graph.find_by(id: params[:id])
+    if @graph.nil?
+      render "graphs/empty"
+    elsif Time.now > @graph.created_at + 15.minutes
+      @graph.destroy
+      render "graphs/empty"
+    else
+      @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
+      @datatables = @graph.datatables
+      @data_array = []
+      @pie_array = []
+      total_value = 0
+      @datatables.each { |e| total_value += e.value }
+      @datatables.each do |data|
+        @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
+        @data_array << [data.key, data.value]
+      end
     end
   end
 
