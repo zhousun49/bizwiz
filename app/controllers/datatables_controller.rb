@@ -8,10 +8,6 @@ class DatatablesController < ApplicationController
     @data_array = []
     @pie_array = []
     @datatables.each do |data|
-      # @temp_array = []
-      # @temp_array << data.key
-      # @temp_array << data.value
-      # @data_array << @temp_array
       @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
       @data_array << [data.key, data.value]
     end
@@ -33,6 +29,26 @@ class DatatablesController < ApplicationController
 
   def import
     @datatable = params[:file]
+    xlsx_read if params[:file].original_filename.match(/.xlsx/)
+    docx_read if params[:file].original_filename.match(/.docx/)
+    pdf_read if params[:file].original_filename.match(/.pdf/)
+    redirect_to collection_path(params[:collection_id])
+  end
+
+  def pdf_read
+    reader = PDF::Reader.new("/mnt/c/Users/Zhou Sun/Desktop/text.pdf")
+    reader.pages.each do |page|
+      s = page.text.split("\n")
+      s.each do |e|
+        e = e.split
+        e[1..-1].each do |v|
+          @datatable = Datatable.create({key: e[0], value: v, graph_id: params[:graph_id]}) if (e[0].empty? == false) && (v.to_f != 0)
+        end
+      end
+    end
+  end
+
+  def xlsx_read
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
 
@@ -53,7 +69,20 @@ class DatatablesController < ApplicationController
         display(0)
       end
     end
-    redirect_to collection_path(params[:collection_id])
+  end
+
+  def docx_read
+    doc = Docx::Document.open(@datatable.path)
+    # first_table = doc.tables[0]
+    doc.tables.each do |table|
+      table.rows.each do |row|
+        data = []
+        row.cells.each { |e| data << e.text }
+        data[1..-1].each do |d|
+          @datatable = Datatable.create({key: data[0], value: d.to_f, graph_id: params[:graph_id]}) if (data[0].empty? == false) && (d.to_f != 0)
+        end
+      end
+    end
   end
 
   def display(integer)
