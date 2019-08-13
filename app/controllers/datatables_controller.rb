@@ -7,6 +7,7 @@ class DatatablesController < ApplicationController
     @datatables.each { |e| total_value += e.value }
     @data_arrays = []
     @pie_array = []
+    @geo_array = []
     @data_series = @datatables.group_by { |data| data[:series] }
     @data_series.each do |k, v|
       arr = Array.new
@@ -35,6 +36,15 @@ class DatatablesController < ApplicationController
         m_arr << k
         m_arr << (data.value * 100 / total_value).round(1)
         @pie_array << m_arr
+      end
+    end
+
+    @data_series.each do |k, v|
+      v.each do |data|
+        m_arr =Array.new
+        m_arr << k
+        m_arr << data.value
+        @geo_array << m_arr
       end
     end
 

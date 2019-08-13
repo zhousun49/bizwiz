@@ -37,16 +37,20 @@
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
           <%= bar_chart @options , thousands: ",", prefix: "$"%>
         </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-area_chart">
+          <%= area_chart @options, thousands: "," %>
+        </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
           <%= line_chart @options, thousands: "," %>
         </div>
+
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-geo_chart">
-          <%= geo_chart @options, download: true %>
+          <%= geo_chart @geo_array %>
         </div>
 
         <!-- radio button -->
         <%= simple_form_for @graph do |f| %>
-          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Area chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['area_chart', 'Area chart'],['line_chart', 'Line chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
           <%= f.input :name, label: 'Name of chart', as: :string %>
           <%= f.input :x_axis_title, as: :string %>
           <%= f.input :y_axis_title, as: :string %>
