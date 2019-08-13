@@ -46,6 +46,8 @@
 
 <script>
   var canvas = document.querySelector("#canvas canvas");
+  var dataUrl = canvas.toDataURL();
+  console.log('canvas dataurl', dataUrl)
   var button = document.getElementById("save-btn");
   button.addEventListener('click', function(){
     canvas.toBlob(function(blob) {
