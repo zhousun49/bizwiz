@@ -36,7 +36,7 @@ class DatatablesController < ApplicationController
   end
 
   def pdf_read
-    reader = PDF::Reader.new("/mnt/c/Users/Zhou Sun/Desktop/text.pdf")
+    reader = PDF::Reader.new(@datatable.path)
     reader.pages.each do |page|
       @graph = Graph.create(collection_id: params[:collection_id])
       s = page.text.split("\n")
