@@ -6,7 +6,7 @@
           <h2>Create your chart</h2>
           <p>Start by uploading your file. We accept .xlsx and .csv files</p>
         </div>
-        <%= form_tag import_graph_datatables_path, multipart: true do %>
+        <%= form_tag import_collection_datatables_path, multipart: true do %>
           <%= file_field_tag :file %>
           <label for="file">
             <img src="<%= image_path "upload-icon.svg" %>" alt="">
@@ -20,21 +20,33 @@
 </section>
 
 <script>
-  var inputs = document.querySelectorAll( '#file' );
-  Array.prototype.forEach.call( inputs, function( input )
-  {
-    var label  = input.nextElementSibling,
-      labelVal = label.innerHTML;
+var inputs = document.querySelectorAll('#file');
+Array.prototype.forEach.call(inputs, function(input) {
+  var label = input.nextElementSibling;
+  var labelVal = label.innerHTML;
 
-    input.addEventListener( 'change', function( e )
-    {
-      var fileName = '';
-      fileName = e.target.value.split( '\\' ).pop();
+  input.addEventListener('change', function(e) {
+    var fileName = '';
+    fileName = e.target.value.split('\\').pop();
 
-      if( fileName )
-        label.querySelector( 'span' ).innerHTML = fileName;
-      else
-        label.innerHTML = labelVal;
-    });
+    if (fileName)
+      label.querySelector('span').innerHTML = fileName;
+    else
+      label.innerHTML = labelVal;
   });
+});
+</script>
+
+<script>
+const file = document.querySelector('#file');
+const submit = document.querySelector('input[type="submit"]');
+submit.disabled = true;
+
+file.addEventListener('change', function(e) {
+  if (e.target.value) {
+    submit.disabled = false;
+  } else {
+    submit.disabled = true;
+  }
+});
 </script>

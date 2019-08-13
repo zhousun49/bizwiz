@@ -24,11 +24,11 @@
         </div>
         <div id="canvas" class="rounded shadow-sm">
           <% if @graph.category.include?('bar') %>
-          <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$" %>
           <% elsif @graph.category.include?('line') %>
-          <%= line_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <%= area_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
           <% elsif @graph.category.include?('pie') %>
-          <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
           <% elsif @graph.category.include?('geo') %>
           <%= geo_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
           <% end %>
@@ -52,6 +52,4 @@
       saveAs(blob, "chart.png");
     })
   });
-  // console.log('canvas', canvas);
-  // console.log('button', button);
 </script>

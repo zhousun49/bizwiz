@@ -10,23 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_073951) do
+
+ActiveRecord::Schema.define(version: 2019_08_12_161106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "charts", force: :cascade do |t|
-    t.bigint "graph_id"
-    t.string "name"
-    t.string "category"
-    t.text "style"
-    t.string "img_url"
-    t.string "x_axis_title"
-    t.string "y_axis_title"
-    t.boolean "legend", default: true
+  create_table "collections", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["graph_id"], name: "index_charts_on_graph_id"
   end
 
   create_table "datatables", force: :cascade do |t|
@@ -49,8 +41,11 @@ ActiveRecord::Schema.define(version: 2019_08_12_073951) do
     t.string "x_axis_title"
     t.string "y_axis_title"
     t.boolean "legend", default: true
+    t.bigint "collection_id"
+    t.index ["collection_id"], name: "index_graphs_on_collection_id"
   end
 
   add_foreign_key "charts", "graphs"
   add_foreign_key "datatables", "graphs"
+  add_foreign_key "graphs", "collections"
 end
