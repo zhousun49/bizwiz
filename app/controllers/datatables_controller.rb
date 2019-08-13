@@ -31,13 +31,17 @@ class DatatablesController < ApplicationController
     end
   end
 
+# @row is an array of Cell objects, each which has a
+# cell value, a style, a cell type (numeric or formula) a coordinate [row, column], and a value
+# which is the same as cell-value. We want to group arrays based on row coordinate.
+
   def import
     @datatable = params[:file]
     spreadsheet = Roo::Excelx.new(@datatable.path)
     sheet = spreadsheet.sheet(0)
-    @row = []
-    sheet.each_row_streaming { |r| @row.push(r) }
-    if @row[0].last.value.class == String
+    @dataset = []
+    sheet.each_row_streaming { |r| @dataset.push(r) }
+    if @dataset[0].last.value.class == String
       display(1)
     else
       display(0)
@@ -46,13 +50,16 @@ class DatatablesController < ApplicationController
   end
 
   def display(integer)
-    key = []
-    @row[integer..-1].each { |e| key.push(e[0].value)}
-    @row[integer..-1].each_with_index do |e, i|
-      e[1..-1].each do |v|
-        @datatable = Datatable.create({key: key[i], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) && (key[i].nil? == false)
+    @series = []
+    @columns = []
+    @dataset[0].each { |e| @columns.push(e.value) }
+    @dataset[integer..-1].each { |e| @series.push(e[0].value) }
+    @dataset[integer..-1].each_with_index do |e, i|
+      e[1..-1].each_with_index do |v, ii|
+        @datatable = Datatable.create({series: @series[i], column: @columns[ii], value: v.value, graph_id: params[:graph_id]}) if (v.value.nil? == false) && (@series[i].nil? == false)
       end
     end
+    raise
   end
 
   def edit
