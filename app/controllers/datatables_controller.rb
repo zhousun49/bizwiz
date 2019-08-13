@@ -38,11 +38,26 @@ class DatatablesController < ApplicationController
   def pdf_read
     reader = PDF::Reader.new("/mnt/c/Users/Zhou Sun/Desktop/text.pdf")
     reader.pages.each do |page|
+      @graph = Graph.create(collection_id: params[:collection_id])
       s = page.text.split("\n")
       s.each do |e|
         e = e.split
         e[1..-1].each do |v|
-          @datatable = Datatable.create({key: e[0], value: v, graph_id: params[:graph_id]}) if (e[0].empty? == false) && (v.to_f != 0)
+          @datatable = Datatable.create({key: e[0], value: v, graph_id: @graph.id}) if (e[0].empty? == false) && (v.to_f != 0)
+        end
+      end
+    end
+  end
+
+  def docx_read
+    doc = Docx::Document.open(@datatable.path)
+    doc.tables.each do |table|
+      @graph = Graph.create(collection_id: params[:collection_id])
+      table.rows.each do |row|
+        data = []
+        row.cells.each { |e| data << e.text }
+        data[1..-1].each do |d|
+          @datatable = Datatable.create({ key: data[0], value: d.to_f, graph_id: @graph.id }) if (data[0].empty? == false) && (d.to_f != 0)
         end
       end
     end
@@ -51,49 +66,16 @@ class DatatablesController < ApplicationController
   def xlsx_read
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
-
       # Create a new graph for each Excel sheet
-      @graph = Graph.new({
-        collection_id: params[:collection_id]
-      })
-      @graph.save
-
-      sheet = spreadsheet.sheet(name)
+      @graph = Graph.create(collection_id: params[:collection_id])
+      # sheet = spreadsheet.sheet(name)
       @row = []
-      sheet.each_row_streaming { |r| @row.push(r) }
-
+      spreadsheet.sheet(name).each_row_streaming { |r| @row.push(r) }
       # If the last cell of the first row in the Excel is a string, begin collecting the data from the next row instead.
-      if @row[0].last.value.class == String
-        display(1)
-      else
-        display(0)
-      end
-    end
-  end
-
-  def docx_read
-    doc = Docx::Document.open(@datatable.path)
-    # first_table = doc.tables[0]
-    doc.tables.each do |table|
-      table.rows.each do |row|
-        data = []
-        row.cells.each { |e| data << e.text }
-        data[1..-1].each do |d|
-          @datatable = Datatable.create({key: data[0], value: d.to_f, graph_id: params[:graph_id]}) if (data[0].empty? == false) && (d.to_f != 0)
+      @row[0..-1].each do |e|
+        e[1..-1].each do |v|
+          @datatable = Datatable.create({key: e[0], value: v.value.to_i, graph_id: @graph.id}) if (v.value.to_i != 0) && (e[0].nil? == false)
         end
-      end
-    end
-  end
-
-  def display(integer)
-    key = []
-    @row[integer..-1].each { |e| key.push(e[0].value) }
-    @row[integer..-1].each_with_index do |e, i|
-      e[1..-1].each do |v|
-        @datatable = Datatable.create({
-          key: key[i], value: v.value,
-          graph_id: @graph.id
-        }) if (v.value.nil? == false) && (key[i].nil? == false)
       end
     end
   end
