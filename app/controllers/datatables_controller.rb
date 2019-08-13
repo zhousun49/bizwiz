@@ -79,7 +79,7 @@ class DatatablesController < ApplicationController
       s.each do |e|
         e = e.split
         e[1..-1].each do |v|
-          @datatable = Datatable.create({key: e[0], value: v.to_f, graph_id: @graph.id}) if (e[0].empty? == false) && (v.to_f != 0)
+          @datatable = Datatable.create({series: e[0], value: v.to_f, graph_id: @graph.id}) if (e[0].empty? == false) && (v.to_f != 0)
         end
       end
     end
@@ -90,10 +90,10 @@ class DatatablesController < ApplicationController
     doc.tables.each do |table|
       @graph = Graph.create({collection_id: params[:collection_id]})
       table.rows.each do |row|
-        data = []
-        row.cells.each { |e| data << e.text }
-        data[1..-1].each do |d|
-          @datatable = Datatable.create({ key: data[0], value: d.to_f, graph_id: @graph.id }) if (data[0].empty? == false) && (d.to_f != 0)
+        @dataset = []
+        row.cells.each { |e| @dataset << e.text }
+        @dataset[1..-1].each do |d|
+          @datatable = Datatable.create({ series: @dataset[0], value: d.to_f, graph_id: @graph.id }) if (@dataset[0].empty? == false) && (d.to_f != 0)
         end
       end
     end
