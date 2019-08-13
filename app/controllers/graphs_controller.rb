@@ -11,16 +11,39 @@ class GraphsController < ApplicationController
     @graph = Graph.find(params[:id])
     @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
     @datatables = @graph.datatables
-    @data_array = []
+    @data_arrays = []
     @pie_array = []
     total_value = 0
     @datatables.each { |e| total_value += e.value }
-    @datatables.each do |data|
-      # @temp_array = []
-      # @temp_array << data.key
-      # @temp_array << data.value
-      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
-      @data_array << [data.key, data.value]
+    @data_series = @datatables.group_by { |data| data[:series] }
+    @data_series.each do |k, v|
+      arr = Array.new
+      v.each do |data|
+        m_arr = Array.new
+        m_arr << data.column
+        m_arr << data.value
+        arr << m_arr
+      end
+      @data_arrays << arr
+    end
+
+    @series_name = []
+    @data_series.each do |k, v|
+      @series_name << k
+    end
+
+    @options = []
+    @series_name.each_with_index do |n, i|
+      @options << {name: n, data: @data_arrays[i]}
+    end
+
+    @data_series.each do |k, v|
+      v.each do |data|
+        m_arr =Array.new
+        m_arr << k
+        m_arr << (data.value * 100 / total_value).round(1)
+        @pie_array << m_arr
+      end
     end
   end
 

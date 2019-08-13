@@ -3,8 +3,8 @@ class DatatablesController < ApplicationController
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @datatable = Datatable.new
     @graph = @datatables.first.graph
-    # total_value = 0
-    # @datatables.each { |e| total_value += e.value }
+    total_value = 0
+    @datatables.each { |e| total_value += e.value }
     @data_arrays = []
     @pie_array = []
     @data_series = @datatables.group_by { |data| data[:series] }
@@ -28,6 +28,17 @@ class DatatablesController < ApplicationController
     @series_name.each_with_index do |n, i|
       @options << {name: n, data: @data_arrays[i]}
     end
+
+    @data_series.each do |k, v|
+      v.each do |data|
+        m_arr =Array.new
+        m_arr << k
+        m_arr << (data.value * 100 / total_value).round(1)
+        @pie_array << m_arr
+      end
+    end
+
+
 
 
       # @temp_array = []
