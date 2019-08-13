@@ -85,7 +85,7 @@ class DatatablesController < ApplicationController
     end
   end
 
-  def display(integer, index)
+  def display(integer)
     key = []
     @row[integer..-1].each { |e| key.push(e[0].value) }
     @row[integer..-1].each_with_index do |e, i|
