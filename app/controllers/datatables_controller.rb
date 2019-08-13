@@ -3,12 +3,17 @@ class DatatablesController < ApplicationController
     @datatables = Datatable.where(graph_id: params[:graph_id])
     @datatable = Datatable.new
     @graph = @datatables.first.graph
+    total_value = 0
+    @datatables.each { |e| total_value += e.value }
     @data_array = []
+    @pie_array = []
     @datatables.each do |data|
-      @temp_array = []
-      @temp_array << data.key
-      @temp_array << data.value
-      @data_array << @temp_array
+      # @temp_array = []
+      # @temp_array << data.key
+      # @temp_array << data.value
+      # @data_array << @temp_array
+      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
+      @data_array << [data.key, data.value]
     end
   end
 

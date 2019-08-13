@@ -12,11 +12,15 @@ class GraphsController < ApplicationController
     @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
     @datatables = @graph.datatables
     @data_array = []
+    @pie_array = []
+    total_value = 0
+    @datatables.each { |e| total_value += e.value }
     @datatables.each do |data|
-      @temp_array = []
-      @temp_array << data.key
-      @temp_array << data.value
-      @data_array << @temp_array
+      # @temp_array = []
+      # @temp_array << data.key
+      # @temp_array << data.value
+      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
+      @data_array << [data.key, data.value]
     end
   end
 
