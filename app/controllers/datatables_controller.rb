@@ -38,7 +38,7 @@ class DatatablesController < ApplicationController
   def pdf_read
     reader = PDF::Reader.new(@datatable.path)
     reader.pages.each do |page|
-      @graph = Graph.create(collection_id: params[:collection_id])
+      @graph = Graph.create(category: "bar_chart", collection_id: params[:collection_id])
       s = page.text.split("\n")
       s.each do |e|
         e = e.split
@@ -52,7 +52,7 @@ class DatatablesController < ApplicationController
   def docx_read
     doc = Docx::Document.open(@datatable.path)
     doc.tables.each do |table|
-      @graph = Graph.create({collection_id: params[:collection_id]})
+      @graph = Graph.create({category: "bar_chart", collection_id: params[:collection_id]})
       table.rows.each do |row|
         data = []
         row.cells.each { |e| data << e.text }
@@ -67,7 +67,7 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
       # Create a new graph for each Excel sheet
-      @graph = Graph.create({name: name, collection_id: params[:collection_id]})
+      @graph = Graph.create({name: name, category: "bar_chart", collection_id: params[:collection_id]})
       # sheet = spreadsheet.sheet(name)
       @row = []
       spreadsheet.sheet(name).each_row_streaming { |r| @row.push(r) }
