@@ -1,6 +1,7 @@
 class DatatablesController < ApplicationController
   def index
     @datatables = Datatable.where(graph_id: params[:graph_id])
+    @datatable = Datatable.new
     @graph = @datatables.first.graph
     total_value = 0
     @datatables.each { |e| total_value += e.value }
