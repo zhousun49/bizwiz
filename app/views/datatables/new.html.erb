@@ -6,7 +6,7 @@
           <h2>Create your chart</h2>
           <p>Start by uploading your file. We accept .xlsx and .csv files</p>
         </div>
-        <%= form_tag import_graph_datatables_path, multipart: true do %>
+        <%= form_tag import_collection_datatables_path, multipart: true do %>
           <%= file_field_tag :file %>
           <label for="file">
             <img src="<%= image_path "upload-icon.svg" %>" alt="">

@@ -1,6 +1,9 @@
 class GraphsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def index
+  end
+
   def create
     @graph = Graph.new
     @graph.save
@@ -8,6 +11,7 @@ class GraphsController < ApplicationController
   end
 
   def show
+    @datatable = Datatable.new
     @graph = Graph.find(params[:id])
     @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:id]}")
     @datatables = @graph.datatables
