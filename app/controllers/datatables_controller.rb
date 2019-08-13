@@ -108,15 +108,14 @@ class DatatablesController < ApplicationController
       @dataset = []
       @series = []
       @columns = []
-
-      spreadsheet.sheet(name).each_row_streaming { |r| @row.push(r) }
+      spreadsheet.sheet(name).each_row_streaming { |r| @dataset.push(r) }
       @dataset[0].each { |e| @columns.push(e.value) }
-      @dataset[integer..-1].each { |e| @series.push(e[0].value) }
+      @dataset[1..-1].each { |e| @series.push(e[0].value) }
 
       # If the last cell of the first row in the Excel is a string, begin collecting the data from the next row instead.
-      @dataset[0..-1].each_with_index do |e, i|
+      @dataset[1..-1].each_with_index do |e, i|
         e[1..-1].each_with_index do |v, ii|
-          @datatable = Datatable.create({series: @series[i], column: @columns[ii], value: v.value.to_i, graph_id: @graph.id}) if (v.value.to_i != 0) && (@series[i].nil? == false)
+          @datatable = Datatable.create({series: @series[i], column: @columns[ii], value: v.value.to_i, graph_id: @graph.id}) if (v.value.to_i != 0) && (e[0].nil? == false)
         end
       end
     end
