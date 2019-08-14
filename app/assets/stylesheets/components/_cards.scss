@@ -1,9 +1,17 @@
 .collection {
-  margin-top: 3rem;
+  margin: 3rem 0;
 
   h2 {
     font-weight: bold;
+    margin-bottom: 0;
+  }
+
+  .collection-title {
     margin-bottom: 1.5rem;
+
+    button {
+      padding: 0;
+    }
   }
 
   .collection-card {
