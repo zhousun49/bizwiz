@@ -21,10 +21,10 @@ class GraphsController < ApplicationController
     # of [Col, Val] array pairs
 
     @data_series = @datatables.group_by { |data| data[:series] }
-    @data_series.each do |k, v|
-      arr = Array.new
+    @data_series.each do |_k, v|
+      arr = []
       v.each do |data|
-        m_arr = Array.new
+        m_arr = []
         m_arr << data.column
         m_arr << data.value
         arr << m_arr
@@ -36,7 +36,7 @@ class GraphsController < ApplicationController
     # array below.
 
     @series_name = []
-    @data_series.each do |k, v|
+    @data_series.each do |k, _v|
       @series_name << k
     end
 
@@ -46,7 +46,10 @@ class GraphsController < ApplicationController
 
     @options = []
     @series_name.each_with_index do |n, i|
-      @options << {name: n, data: @data_arrays[i]}
+      @options << {
+        name: n,
+        data: @data_arrays[i]
+      }
     end
 
     # this makes an array specifically for a pie chart, automatically calculating
@@ -54,7 +57,7 @@ class GraphsController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        m_arr =Array.new
+        m_arr = []
         m_arr << k
         m_arr << (data.value * 100 / total_value).round(1)
         @pie_array << m_arr
@@ -65,7 +68,7 @@ class GraphsController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        m_arr =Array.new
+        m_arr = []
         m_arr << k
         m_arr << data.value
         @geo_array << m_arr

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_161106) do
+ActiveRecord::Schema.define(version: 2019_08_13_030005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,10 +22,11 @@ ActiveRecord::Schema.define(version: 2019_08_12_161106) do
 
   create_table "datatables", force: :cascade do |t|
     t.float "value"
-    t.string "key"
+    t.string "series"
     t.bigint "graph_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "column"
     t.index ["graph_id"], name: "index_datatables_on_graph_id"
   end
 
