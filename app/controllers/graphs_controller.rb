@@ -23,7 +23,6 @@ class GraphsController < ApplicationController
       @datatables.each { |e| total_value += e.value }
     # In order for chartkick to recognize columns, data needs to be an array
     # of [Col, Val] array pairs
-    raise
       @data_series = @datatables.group_by { |data| data[:series] }
       @data_series.each do |_k, v|
         arr = []
