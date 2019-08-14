@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_13_030005) do
+ActiveRecord::Schema.define(version: 2019_08_13_092955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2019_08_13_030005) do
   create_table "collections", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["slug"], name: "index_collections_on_slug", unique: true
   end
 
   create_table "datatables", force: :cascade do |t|
@@ -41,7 +43,9 @@ ActiveRecord::Schema.define(version: 2019_08_13_030005) do
     t.string "y_axis_title"
     t.boolean "legend", default: true
     t.bigint "collection_id"
+    t.string "slug", null: false
     t.index ["collection_id"], name: "index_graphs_on_collection_id"
+    t.index ["slug"], name: "index_graphs_on_slug", unique: true
   end
 
   add_foreign_key "datatables", "graphs"

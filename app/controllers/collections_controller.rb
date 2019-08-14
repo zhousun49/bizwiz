@@ -4,12 +4,13 @@ class CollectionsController < ApplicationController
 
   def create
     @collection = Collection.new
+    @collection.slug = SecureRandom.hex(10)
     @collection.save
-    redirect_to new_collection_datatable_path(@collection)
+    redirect_to new_collection_datatable_path(@collection.slug)
   end
 
   def show
-    @collection = Collection.find(params[:id])
+    @collection = Collection.find_by(slug: params[:slug])
     @graphs = @collection.graphs
     @canvas_data = []
     @graphs.each_with_index do |graph, i|
