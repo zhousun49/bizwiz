@@ -15,13 +15,13 @@ class GraphsController < ApplicationController
       @graph.destroy
       render "graphs/empty"
     else
-    @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:slug]}")
-    @datatables = @graph.datatables
-    @data_arrays = []
-    @pie_array = []
-    @geo_array = []
-    total_value = 0
-    @datatables.each { |e| total_value += e.value }
+      @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:slug]}")
+      @datatables = @graph.datatables
+      @data_arrays = []
+      @pie_array = []
+      @geo_array = []
+      total_value = 0
+      @datatables.each { |e| total_value += e.value }
 
     # In order for chartkick to recognize columns, data needs to be an array
     # of [Col, Val] array pairs
@@ -81,25 +81,27 @@ class GraphsController < ApplicationController
       end
     end
   end
+end
 
-  def update
-    @graph = Graph.find_by(slug: params[:slug])
-    if @graph.update(graph_params)
-      redirect_to graph_path(@graph.slug)
-    else
-      render :new
-    end
-  end
-
-  def destroy
-    @graph = Graph.find_by(slug: params[:slug])
-    @graph.destroy
-    redirect_to root_path
-  end
-
-  private
-
-  def graph_params
-    params.require(:graph).permit(:category, :name, :x_axis_title, :y_axis_title, :slug)
+def update
+  @graph = Graph.find_by(slug: params[:slug])
+  if @graph.update(graph_params)
+    redirect_to graph_path(@graph.slug)
+  else
+    render :new
   end
 end
+
+def destroy
+  @graph = Graph.find_by(slug: params[:slug])
+  @graph.destroy
+  redirect_to root_path
+end
+
+private
+
+def graph_params
+  params.require(:graph).permit(:category, :name, :x_axis_title, :y_axis_title, :slug)
+end
+end
+

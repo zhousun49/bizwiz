@@ -182,7 +182,7 @@ class DatatablesController < ApplicationController
 
   private
 
-  def datable_params
+  def datatable_params
     params.require(:datatable).permit(:value, :column, :series, :graph_id)
   end
 end
