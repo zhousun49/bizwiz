@@ -23,10 +23,11 @@ ActiveRecord::Schema.define(version: 2019_08_13_092955) do
 
   create_table "datatables", force: :cascade do |t|
     t.float "value"
-    t.string "key"
+    t.string "series"
     t.bigint "graph_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "column"
     t.index ["graph_id"], name: "index_datatables_on_graph_id"
   end
 

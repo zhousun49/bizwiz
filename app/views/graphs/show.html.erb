@@ -24,13 +24,15 @@
         </div>
         <div id="canvas" class="rounded shadow-sm">
           <% if @graph.category.include?('bar') %>
-          <%= bar_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$" %>
+          <%= bar_chart @options, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$" %>
           <% elsif @graph.category.include?('line') %>
-          <%= area_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
+          <%= line_chart @options, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, thousands: ",", prefix: "$"   %>
           <% elsif @graph.category.include?('pie') %>
           <%= pie_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
           <% elsif @graph.category.include?('geo') %>
-          <%= geo_chart @data_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <%= geo_chart @geo_array, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
+          <% elsif @graph.category.include?('area') %>
+          <%= area_chart @options, title: @graph.name, xtitle: @graph.x_axis_title, ytitle: @graph.y_axis_title %>
           <% end %>
         </div>
 
@@ -43,7 +45,6 @@
     </div>
   </div>
 </section>
-
 <script>
   var canvas = document.querySelector("#canvas canvas");
   var button = document.getElementById("save-btn");
@@ -53,3 +54,4 @@
     })
   });
 </script>
+

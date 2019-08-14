@@ -13,7 +13,7 @@
           <tbody>
             <% @datatables.each do |e| %>
             <tr>
-              <td scope="row"><%= e.key %></td>
+              <td scope="row"><%= e.series %></td>
               <td><%= e.value %></td>
               <td>
                 <%= link_to  'Edit', edit_graph_datatable_path(params[:graph_slug], e.id), class: "text-secondary" %>
@@ -21,32 +21,35 @@
               </td>
             </tr>
             <% end %>
-          </tbody>
+              </tbody>
         </table>
         <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
-          <%= f.input :key, label: 'Label' %>
+          <%= f.input :series, label: 'Label' %>
           <%= f.input :value %>
           <%= f.submit 'Add data', class: "btn btn-outline-primary" %>
         <% end %>
       </div>
-      <div class="col-sm-8">
+       <div class="col-sm-8">
         <!-- charts -->
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-pie_chart">
           <%= pie_chart @pie_array, donut: false, legend: "bottom", suffix: "%" %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-bar_chart">
-          <%= bar_chart @data_array, thousands: ",", prefix: "$" %>
+          <%= bar_chart @options , thousands: ",", prefix: "$"%>
+        </div>
+        <div id="canvas" class="tabcontent rounded shadow-sm canvas-area_chart">
+          <%= area_chart @options, thousands: "," %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-line_chart">
-          <%= area_chart @data_array, thousands: ",", prefix: "$" %>
+          <%= line_chart @options, thousands: "," %>
         </div>
         <div id="canvas" class="tabcontent rounded shadow-sm canvas-geo_chart">
-          <%= geo_chart @data_array %>
+          <%= geo_chart @geo_array %>
         </div>
 
         <!-- radio button -->
         <%= simple_form_for @graph do |f| %>
-          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['line_chart', 'Area chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
+          <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['area_chart', 'Area chart'],['line_chart', 'Line chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
           <%= f.input :name, label: 'Name of chart', as: :string %>
           <%= f.input :x_axis_title, as: :string %>
           <%= f.input :y_axis_title, as: :string %>
