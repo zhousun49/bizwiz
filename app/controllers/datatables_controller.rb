@@ -13,10 +13,10 @@ class DatatablesController < ApplicationController
     # of [Col, Val] array pairs
 
     @data_series = @datatables.group_by { |data| data[:series] }
-    @data_series.each do |k, v|
-      arr = Array.new
+    @data_series.each do |_k, v|
+      arr = []
       v.each do |data|
-        m_arr = Array.new
+        m_arr = []
         m_arr << data.column
         m_arr << data.value
         arr << m_arr
@@ -28,7 +28,7 @@ class DatatablesController < ApplicationController
     # array below.
 
     @series_name = []
-    @data_series.each do |k, v|
+    @data_series.each do |k, _v|
       @series_name << k
     end
 
@@ -38,7 +38,7 @@ class DatatablesController < ApplicationController
 
     @options = []
     @series_name.each_with_index do |n, i|
-      @options << {name: n, data: @data_arrays[i]}
+      @options << { name: n, data: @data_arrays[i] }
     end
 
     # this makes an array specifically for a pie chart, automatically calculating
@@ -46,7 +46,7 @@ class DatatablesController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        m_arr =Array.new
+        m_arr = []
         m_arr << k
         m_arr << (data.value * 100 / total_value).round(1)
         @pie_array << m_arr
@@ -90,12 +90,16 @@ class DatatablesController < ApplicationController
   def pdf_read
     reader = PDF::Reader.new(@datatable.path)
     reader.pages.each do |page|
-      @graph = Graph.create(collection_id: params[:collection_id])
+      @graph = Graph.create(category: "bar_chart", collection_id: params[:collection_id])
       s = page.text.split("\n")
       s.each do |e|
         e = e.split
         e[1..-1].each do |v|
-          @datatable = Datatable.create({series: e[0], value: v.to_f, graph_id: @graph.id}) if (e[0].empty? == false) && (v.to_f != 0)
+          @datatable = Datatable.create({
+            series: e[0],
+            value: v.to_f,
+            graph_id: @graph.id
+          }) if (e[0].empty? == false) && (v.to_f != 0)
         end
       end
     end
@@ -105,14 +109,13 @@ class DatatablesController < ApplicationController
     doc = Docx::Document.open(@datatable.path)
 
     doc.tables.each do |table|
-      @graph = Graph.create({collection_id: params[:collection_id]})
+      @graph = Graph.create({ category: "bar_chart", collection_id: params[:collection_id]})
       @series = []
       @columns = []
       @dataset = []
       table.rows.each do |row|
         arr = []
         row.cells.each do |e|
-          p e.text
           arr << e.text if e.text != ""
         end
           @dataset << arr
@@ -132,7 +135,7 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
       # Create a new graph for each Excel sheet
-      @graph = Graph.create({name: name, collection_id: params[:collection_id]})
+      @graph = Graph.create({ name: name, category: "bar_chart", collection_id: params[:collection_id] })
       # sheet = spreadsheet.sheet(name)
       @dataset = []
       # Added series and columns arrays that are passed to the datatable object
@@ -146,7 +149,12 @@ class DatatablesController < ApplicationController
       # If the last cell of the first row in the Excel is a string, begin collecting the data from the next row instead.
       @dataset[1..-1].each_with_index do |e, i|
         e[1..-1].each_with_index do |v, ii|
-          @datatable = Datatable.create({series: @series[i], column: @columns[ii], value: v.value.to_i, graph_id: @graph.id}) if (v.value.to_i != 0) && (e[0].nil? == false)
+          @datatable = Datatable.create({
+            series: @series[i],
+            column: @columns[ii],
+            value: v.value.to_i,
+            graph_id: @graph.id
+          }) if (v.value.to_i != 0) && (e[0].nil? == false)
         end
       end
     end

@@ -1,6 +1,49 @@
-<h1>Your graphs</h1>
-<% @graphs.each_with_index do | graph, i | %>
-<%= link_to graph.name.nil? ? "Graph #{i + 1}" : graph.name , graph_datatables_path(graph) %>
+<div class="collection">
+  <div class="container">
+    <h2>All Charts</h2>
+    <button id = "save-ppt-btn">Save PPT</button>
+    <div class="row">
+        <% @graphs.each_with_index do | graph, i | %>
+          <div class="col-sm-4">
+            <% if graph.category.nil? %>
+              <p>No preview available</p>
+            <% elsif graph.category.include?('bar') %>
+              <%= bar_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$" %>
+            <% elsif graph.category.include?('line') %>
+              <%= area_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$"   %>
+            <% elsif graph.category.include?('pie') %>
+              <%= pie_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
+            <% elsif graph.category.include?('geo') %>
+              <%= geo_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title %>
+            <% end %>
 
-<% end %>
+            <%= link_to graph_datatables_path(graph) do %>
+            <div class="collection-card">
+              <%= graph.name.nil? ? "Graph #{i + 1}" : graph.name %>
+            </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var allCanvas = document.querySelectorAll("canvas");
+  var allData = []
+  allCanvas.forEach(function(canvas){
+    allData.push(canvas.toDataURL());
+  });
+  var button_ppt = document.getElementById("save-ppt-btn");
+  button_ppt.addEventListener('click', function(){
+    var pptx = new PptxGenJS();
+    allData.forEach(function(d){
+      var slide = pptx.addNewSlide();
+      slide.addImage({ data: d, x:0.0, y:0.0, w:5.0, h:4.0 });
+    })
+    pptx.save('Sample Presentation');
+  });
+</script>
+
 
