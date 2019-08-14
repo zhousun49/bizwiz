@@ -1,8 +1,10 @@
 class DatatablesController < ApplicationController
   def index
-    @datatables = Datatable.where(graph_id: params[:graph_id])
-    @datatable = Datatable.new
+    graph = Graph.find_by(slug: params[:graph_slug])
+    @datatables = Datatable.where(graph_id: graph.id)
     @graph = @datatables.first.graph
+    @datatable = Datatable.new
+    # @datatable.graph_id = params[:graph_id]
     total_value = 0
     @datatables.each { |e| total_value += e.value }
     @data_arrays = []
@@ -68,9 +70,10 @@ class DatatablesController < ApplicationController
   end
 
   def create
-    @datatable = Datatable.new(datable_params)
-    @datatable.graph_id = params[:graph_id]
-    if @datatable.update(datable_params)
+    @datatable = Datatable.new
+    graph = Graph.find_by(slug: params[:graph_slug])
+    @datatable.graph_id = graph.id
+    if @datatable.update(datatable_params)
       redirect_to graph_datatables_path
     else
       render :new
@@ -82,13 +85,15 @@ class DatatablesController < ApplicationController
     xlsx_read if params[:file].original_filename.match(/.xlsx/)
     docx_read if params[:file].original_filename.match(/.docx/)
     pdf_read if params[:file].original_filename.match(/.pdf/)
-    redirect_to collection_path(params[:collection_id])
+    redirect_to collection_path(params[:collection_slug])
   end
 
   def pdf_read
     reader = PDF::Reader.new(@datatable.path)
     reader.pages.each do |page|
-      @graph = Graph.create(category: "bar_chart", collection_id: params[:collection_id])
+      graph_slug = SecureRandom.hex(10)
+      c = Collection.find_by(slug: params[:collection_slug])
+      @graph = Graph.create({category: "bar_chart", collection_id: c.id, slug: graph_slug})
       s = page.text.split("\n")
       s.each do |e|
         e = e.split
@@ -106,7 +111,9 @@ class DatatablesController < ApplicationController
   def docx_read
     doc = Docx::Document.open(@datatable.path)
     doc.tables.each do |table|
-      @graph = Graph.create({ category: "bar_chart", collection_id: params[:collection_id] })
+      graph_slug = SecureRandom.hex(10)
+      c = Collection.find_by(slug: params[:collection_slug])
+      @graph = Graph.create({category: "bar_chart", collection_id: c.id, slug: graph_slug})
       table.rows.each do |row|
         @dataset = []
         row.cells.each { |e| @dataset << e.text }
@@ -125,11 +132,13 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
       # Create a new graph for each Excel sheet
-      @graph = Graph.create({ name: name, category: "bar_chart", collection_id: params[:collection_id] })
-      # sheet = spreadsheet.sheet(name)
-      @dataset = []
+      graph_slug = SecureRandom.hex(10)
+      c = Collection.find_by(slug: params[:collection_slug])
+      @graph = Graph.create({name: name, category: "bar_chart", collection_id: c.id, slug: graph_slug})
+
       # Added series and columns arrays that are passed to the datatable object
       # and then used when building arrays
+      @dataset = []
       @series = []
       @columns = []
       spreadsheet.sheet(name).each_row_streaming { |r| @dataset.push(r) }
@@ -157,8 +166,8 @@ class DatatablesController < ApplicationController
   def update
     @datatable = Datatable.find(params[:id])
     @graph = @datatable.graph
-    if @datatable.update(datable_params)
-      redirect_to graph_datatables_path(@graph)
+    if @datatable.update(datatable_params)
+      redirect_to graph_datatables_path(@graph.slug)
     else
       render :edit
     end
@@ -168,12 +177,12 @@ class DatatablesController < ApplicationController
     @datatable = Datatable.find(params[:id])
     @graph = @datatable.graph
     @datatable.destroy
-    redirect_to graph_datatables_path(@graph)
+    redirect_to graph_datatables_path(@graph.slug)
   end
 
   private
 
   def datable_params
-    params.require(:datatable).permit(:value, :column, :series)
+    params.require(:datatable).permit(:value, :column, :series, :graph_id)
   end
 end

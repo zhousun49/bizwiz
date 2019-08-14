@@ -16,7 +16,7 @@
               <td scope="row"><%= e.series %></td>
               <td><%= e.value %></td>
               <td>
-                <%= link_to  'Edit', edit_graph_datatable_path(e.graph_id, e.id), class: "text-secondary" %>
+                <%= link_to  'Edit', edit_graph_datatable_path(params[:graph_slug], e.id), class: "text-secondary" %>
                 <%= link_to  'Delete', graph_datatable_path(e.graph_id, e.id), method: :delete, class: " text-danger" %>
               </td>
             </tr>
