@@ -2,6 +2,19 @@
   <div class="container">
     <h2>All Charts</h2>
     <button id = "save-ppt-btn">Save PPT</button>
+    <table class="qrcode">
+             <% @qr.modules.each_index do |x| -%>
+               <tr>
+               <% @qr.modules.each_index do |y| -%>
+                <% if @qr.dark?(x,y) -%>
+                  <td class="black"/>
+                <% else -%>
+                  <td class="white"/>
+                <% end -%>
+               <% end -%>
+               </tr>
+             <% end -%>
+            </table>
     <div class="row">
         <% @graphs.each_with_index do | graph, i | %>
           <div class="col-sm-4">
