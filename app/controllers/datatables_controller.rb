@@ -11,6 +11,7 @@ class DatatablesController < ApplicationController
 
     # In order for chartkick to recognize columns, data needs to be an array
     # of [Col, Val] array pairs
+
     @data_series = @datatables.group_by { |data| data[:series] }
     @data_series.each do |k, v|
       arr = Array.new
@@ -34,6 +35,7 @@ class DatatablesController < ApplicationController
     # The options array is passed to the line graph and area graph. It counts how
     # many series there are, and builds the options for each series. We can expand
     # on this to add customization (colors etc.)
+
     @options = []
     @series_name.each_with_index do |n, i|
       @options << {name: n, data: @data_arrays[i]}
@@ -55,10 +57,10 @@ class DatatablesController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        m_arr =Array.new
-        m_arr << k
-        m_arr << data.value
-        @geo_array << m_arr
+        arr =Array.new
+        arr << k
+        arr << data.value
+        @geo_array << arr
       end
     end
   end
@@ -101,14 +103,27 @@ class DatatablesController < ApplicationController
 
   def docx_read
     doc = Docx::Document.open(@datatable.path)
+
     doc.tables.each do |table|
       @graph = Graph.create({collection_id: params[:collection_id]})
+      @series = []
+      @columns = []
+      @dataset = []
       table.rows.each do |row|
-        @dataset = []
-        row.cells.each { |e| @dataset << e.text }
-        @dataset[1..-1].each do |d|
-          @datatable = Datatable.create({ series: @dataset[0], value: d.to_f, graph_id: @graph.id }) if (@dataset[0].empty? == false) && (d.to_f != 0)
+        arr = []
+        row.cells.each do |e|
+          p e.text
+          arr << e.text if e.text != ""
         end
+          @dataset << arr
+      end
+      @dataset[0].each { |e| @columns.push(e) }
+      @dataset[1..-1].each { |e| @series.push(e[0]) }
+    end
+
+    @dataset[1..-1].each_with_index do |d, i|
+      d[1..-1].each_with_index do |v, ii|
+        @datatable = Datatable.create({ series: @series[i], column: @columns[ii], value: v.to_f, graph_id: @graph.id }) if (@dataset[0].empty? == false) && (v.to_f != 0)
       end
     end
   end
