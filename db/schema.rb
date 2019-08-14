@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2019_08_12_161106) do
+ActiveRecord::Schema.define(version: 2019_08_14_015609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +44,6 @@ ActiveRecord::Schema.define(version: 2019_08_12_161106) do
     t.index ["collection_id"], name: "index_graphs_on_collection_id"
   end
 
-  add_foreign_key "charts", "graphs"
   add_foreign_key "datatables", "graphs"
   add_foreign_key "graphs", "collections"
 end
