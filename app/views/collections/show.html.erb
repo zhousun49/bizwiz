@@ -1,20 +1,31 @@
 <div class="collection">
   <div class="container">
-    <h2>All Charts</h2>
-    <button id = "save-ppt-btn">Save PPT</button>
+    <div class="collection-title d-flex justify-content-between">
+      <h2>All Charts</h2>
+      <div class="btn-group">
+        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Export charts as
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <div class="qr dropdown-item">QR goes here</div>
+          <div class="dropdown-divider"></div>
+          <a id="export-ppt" class="dropdown-item" href="#">Powerpoint (.ppt)</a>
+        </div>
+      </div>
+    </div>
     <div class="row">
         <% @graphs.each_with_index do | graph, i | %>
-          <div class="col-sm-4">
+          <div class="col-md-4">
             <% if graph.category.nil? %>
               <p>No preview available</p>
             <% elsif graph.category.include?('bar') %>
-              <%= bar_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$" %>
+              <%= bar_chart @canvas_data[i] %>
             <% elsif graph.category.include?('line') %>
-              <%= area_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, thousands: ",", prefix: "$"   %>
+              <%= area_chart @canvas_data[i] %>
             <% elsif graph.category.include?('pie') %>
-              <%= pie_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title, donut: false, legend: "bottom", label: "Value", suffix: "%" %>
+              <%= pie_chart @canvas_data[i] %>
             <% elsif graph.category.include?('geo') %>
-              <%= geo_chart @canvas_data[i], title: graph.name, xtitle: graph.x_axis_title, ytitle: graph.y_axis_title %>
+              <%= geo_chart @canvas_data[i] %>
             <% end %>
 
             <%= link_to graph_datatables_path(graph) do %>
@@ -35,14 +46,14 @@
   allCanvas.forEach(function(canvas){
     allData.push(canvas.toDataURL());
   });
-  var button_ppt = document.getElementById("save-ppt-btn");
-  button_ppt.addEventListener('click', function(){
+  var buttonPpt = document.getElementById("export-ppt");
+  buttonPpt.addEventListener('click', function(){
     var pptx = new PptxGenJS();
     allData.forEach(function(d){
       var slide = pptx.addNewSlide();
       slide.addImage({ data: d, x:0.0, y:0.0, w:5.0, h:4.0 });
     })
-    pptx.save('Sample Presentation');
+    pptx.save('presentation');
   });
 </script>
 
