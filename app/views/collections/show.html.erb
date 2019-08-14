@@ -7,13 +7,27 @@
           Export charts as
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <div class="qr dropdown-item">QR goes here</div>
+          <div class="dropdown-item">
+            <table class="qrcode">
+             <% @qr.modules.each_index do |x| -%>
+               <tr>
+               <% @qr.modules.each_index do |y| -%>
+                <% if @qr.dark?(x,y) -%>
+                  <td class="black"/>
+                <% else -%>
+                  <td class="white"/>
+                <% end -%>
+               <% end -%>
+               </tr>
+             <% end -%>
+            </table>
+          </div>
           <div class="dropdown-divider"></div>
           <a id="export-ppt" class="dropdown-item" href="#">Powerpoint (.ppt)</a>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="charts">
         <% @graphs.each_with_index do | graph, i | %>
           <div class="col-md-4">
             <% if graph.category.nil? %>
@@ -41,13 +55,13 @@
 </div>
 
 <script>
-  var allCanvas = document.querySelectorAll("canvas");
-  var allData = []
-  allCanvas.forEach(function(canvas){
-    allData.push(canvas.toDataURL());
-  });
   var buttonPpt = document.getElementById("export-ppt");
   buttonPpt.addEventListener('click', function(){
+    var allCanvas = document.querySelectorAll("canvas");
+    var allData = []
+    allCanvas.forEach(function(canvas){
+      allData.push(canvas.toDataURL());
+    });
     var pptx = new PptxGenJS();
     allData.forEach(function(d){
       var slide = pptx.addNewSlide();
@@ -55,6 +69,13 @@
     })
     pptx.save('presentation');
   });
+
+  const list = document.querySelector('#charts');
+  Sortable.create(list, {
+    ghostClass: "ghost",
+    animation: 150,
+    onEnd: (event) => {
+      alert(`${event.oldIndex} moved to ${event.newIndex}`);
+    }
+  });
 </script>
-
-

@@ -7,5 +7,5 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 Datatable.destroy_all if Rails.env.development?
 Graph.destroy_all if Rails.env.development?
-Collection.destroy_all if Rails.env.development
+Collection.destroy_all if Rails.env.development?
 p 'cleared database'
