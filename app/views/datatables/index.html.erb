@@ -35,7 +35,7 @@
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade" id="pills-chart" role="tabpanel" aria-labelledby="pills-chart-tab">
+          <div class="tab-pane fade show active" id="pills-chart" role="tabpanel" aria-labelledby="pills-chart-tab">
             <%= simple_form_for @graph do |f| %>
               <%= f.input :category, as: :radio_buttons, collection: [['pie_chart', 'Pie chart'], ['bar_chart', 'Bar chart'], ['area_chart', 'Area chart'],['line_chart', 'Line chart'], ['geo_chart', 'Geo chart']], label_method: :second, value_method: :first, checked: ['pie_chart', 'Pie chart'] %>
               <%= f.input :name, label: 'Name of chart', as: :string %>
@@ -44,7 +44,7 @@
               <%= f.submit 'Create my chart', class: "btn btn-primary" %>
             <% end %>
           </div>
-          <div class="tab-pane fade show active" id="pills-data" role="tabpanel" aria-labelledby="pills-data-tab">
+          <div class="tab-pane fade" id="pills-data" role="tabpanel" aria-labelledby="pills-data-tab">
             <table class="table">
               <thead class="thead-light">
                 <tr>
