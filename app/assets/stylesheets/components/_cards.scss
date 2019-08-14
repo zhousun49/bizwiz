@@ -14,10 +14,58 @@
     }
   }
 
-  .collection-card {
+  .btn-group {
+    padding-top: 10px;
+
+    & + .btn-group {
+      margin-left: 20px;
+    }
+  }
+
+  .dropdown-menu {
+    padding: 10px 0;
+
+    table {
+      margin: 0 auto;
+    }
+
+    table.qrcode td {
+      width: 3px;
+      height: 3px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .collection-title {
+    flex-direction: column;
+  }
+}
+
+.collection-card {
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,.03);
+
+  .collection-card-chart {
     padding: 20px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 8px 16px rgba(0,0,0,.03);
+  }
+
+  .collection-card-link {
+    background: #EFEEF4;;
+    text-align: center;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    a {
+      display: inline-block;
+      padding: 20px;
+      display: block;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
   }
 }
