@@ -9,11 +9,15 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
     <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+    <%= javascript_pack_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
+
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@2.5.0/dist/pptxgen.bundle.js"></script>
   </head>
   <body>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@2.5.0/dist/pptxgen.bundle.js"></script>
-    <%= javascript_include_tag 'application' %>
-    <%= javascript_pack_tag 'application' %>
+
+
+
     <%= render 'navigation' %>
     <main>
       <%= yield %>

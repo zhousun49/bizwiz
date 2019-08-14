@@ -2,7 +2,7 @@
   <div class="container">
     <h2>All Charts</h2>
     <button id = "save-ppt-btn">Save PPT</button>
-    <div class="row">
+    <div class="row" id = "charts">
         <% @graphs.each_with_index do | graph, i | %>
           <div class="col-sm-4">
             <% if graph.category.nil? %>
@@ -30,13 +30,13 @@
 </div>
 
 <script>
-  var allCanvas = document.querySelectorAll("canvas");
-  var allData = []
-  allCanvas.forEach(function(canvas){
-    allData.push(canvas.toDataURL());
-  });
   var button_ppt = document.getElementById("save-ppt-btn");
   button_ppt.addEventListener('click', function(){
+    var allCanvas = document.querySelectorAll("canvas");
+    var allData = []
+    allCanvas.forEach(function(canvas){
+      allData.push(canvas.toDataURL());
+    });
     var pptx = new PptxGenJS();
     allData.forEach(function(d){
       var slide = pptx.addNewSlide();
@@ -44,6 +44,16 @@
     })
     pptx.save('Sample Presentation');
   });
-</script>
 
+
+  const list = document.querySelector('#charts');
+  Sortable.create(list, {
+  ghostClass: "ghost",
+  animation: 150,
+  onEnd: (event) => {
+    alert(`${event.oldIndex} moved to ${event.newIndex}`);
+  }
+});
+
+</script>
 

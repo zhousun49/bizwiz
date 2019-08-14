@@ -1,0 +1,12 @@
+#charts div {
+  cursor: grab;
+}
+
+#charts div:active {
+  cursor: grabbing;
+}
+
+#charts div.ghost {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
