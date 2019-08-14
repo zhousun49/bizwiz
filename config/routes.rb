@@ -4,8 +4,6 @@ Rails.application.routes.draw do
       collection do
         post :import
       end
-      resources :charts do
-      end
     end
   end
 
