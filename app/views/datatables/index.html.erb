@@ -55,6 +55,9 @@
           <%= f.input :y_axis_title, as: :string %>
           <%= f.submit 'Create my chart', class: "btn btn-primary" %>
         <% end %>
+        <div>
+          <%= link_to "Go Back", collection_path(@graph.collection.slug) %>
+        </div>
       </div>
     </div>
   </div>
