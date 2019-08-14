@@ -1,10 +1,10 @@
 <div class="collection">
   <div class="container">
     <h2>All Charts</h2>
+    <button id = "save-ppt-btn">Save PPT</button>
     <div class="row">
         <% @graphs.each_with_index do | graph, i | %>
           <div class="col-sm-4">
-
             <% if graph.category.nil? %>
               <p>No preview available</p>
             <% elsif graph.category.include?('bar') %>
@@ -28,3 +28,22 @@
     </div>
   </div>
 </div>
+
+<script>
+  var allCanvas = document.querySelectorAll("canvas");
+  var allData = []
+  allCanvas.forEach(function(canvas){
+    allData.push(canvas.toDataURL());
+  });
+  var button_ppt = document.getElementById("save-ppt-btn");
+  button_ppt.addEventListener('click', function(){
+    var pptx = new PptxGenJS();
+    allData.forEach(function(d){
+      var slide = pptx.addNewSlide();
+      slide.addImage({ data: d, x:0.0, y:0.0, w:5.0, h:4.0 });
+    })
+    pptx.save('Sample Presentation');
+  });
+</script>
+
+
