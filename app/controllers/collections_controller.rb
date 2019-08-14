@@ -16,7 +16,7 @@ class CollectionsController < ApplicationController
       keys = []
       values = []
       graph.datatables.each do |d|
-        keys << d.key
+        keys << d.series
         values << d.value
       end
       @canvas_data << Hash[keys.zip(values)]

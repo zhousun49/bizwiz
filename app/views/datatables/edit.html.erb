@@ -9,7 +9,7 @@
           </div>
           <div class="card-body">
             <%= simple_form_for @datatable, url: {action: "update"} do |f| %>
-              <%= f.input :key, label: 'Label' %>
+              <%= f.input :series, label: 'Label' %>
               <%= f.input :value %>
               <%= f.submit 'Update data', class: "btn btn-outline-primary" %>
             <% end %>
