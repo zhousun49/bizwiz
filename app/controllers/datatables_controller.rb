@@ -5,11 +5,61 @@ class DatatablesController < ApplicationController
     @graph = @datatables.first.graph
     total_value = 0
     @datatables.each { |e| total_value += e.value }
-    @data_array = []
+    @data_arrays = []
     @pie_array = []
-    @datatables.each do |data|
-      @pie_array << [data.key, (data.value * 100 / total_value).round(1)]
-      @data_array << [data.key, data.value]
+    @geo_array = []
+
+    # In order for chartkick to recognize columns, data needs to be an array
+    # of [Col, Val] array pairs
+    @data_series = @datatables.group_by { |data| data[:series] }
+    @data_series.each do |_k, v|
+      arr = []
+      v.each do |data|
+        m_arr = []
+        m_arr << data.column
+        m_arr << data.value
+        arr << m_arr
+      end
+      @data_arrays << arr
+    end
+
+    # This builds an array of series names, to be used when building the options
+    # array below.
+
+    @series_name = []
+    @data_series.each do |k, _v|
+      @series_name << k
+    end
+
+    # The options array is passed to the line graph and area graph. It counts how
+    # many series there are, and builds the options for each series. We can expand
+    # on this to add customization (colors etc.)
+    @options = []
+    @series_name.each_with_index do |n, i|
+      @options << { name: n, data: @data_arrays[i] }
+    end
+
+    # this makes an array specifically for a pie chart, automatically calculating
+    # percentage
+
+    @data_series.each do |k, v|
+      v.each do |data|
+        m_arr = []
+        m_arr << k
+        m_arr << (data.value * 100 / total_value).round(1)
+        @pie_array << m_arr
+      end
+    end
+
+    # this makes an array specifically for a geo_chart
+
+    @data_series.each do |k, v|
+      v.each do |data|
+        m_arr = []
+        m_arr << k
+        m_arr << data.value
+        @geo_array << m_arr
+      end
     end
   end
 
@@ -43,7 +93,11 @@ class DatatablesController < ApplicationController
       s.each do |e|
         e = e.split
         e[1..-1].each do |v|
-          @datatable = Datatable.create({key: e[0], value: v.to_f, graph_id: @graph.id}) if (e[0].empty? == false) && (v.to_f != 0)
+          @datatable = Datatable.create({
+            series: e[0],
+            value: v.to_f,
+            graph_id: @graph.id
+          }) if (e[0].empty? == false) && (v.to_f != 0)
         end
       end
     end
@@ -52,12 +106,16 @@ class DatatablesController < ApplicationController
   def docx_read
     doc = Docx::Document.open(@datatable.path)
     doc.tables.each do |table|
-      @graph = Graph.create({category: "bar_chart", collection_id: params[:collection_id]})
+      @graph = Graph.create({ category: "bar_chart", collection_id: params[:collection_id] })
       table.rows.each do |row|
-        data = []
-        row.cells.each { |e| data << e.text }
-        data[1..-1].each do |d|
-          @datatable = Datatable.create({ key: data[0], value: d.to_f, graph_id: @graph.id }) if (data[0].empty? == false) && (d.to_f != 0)
+        @dataset = []
+        row.cells.each { |e| @dataset << e.text }
+        @dataset[1..-1].each do |d|
+          @datatable = Datatable.create({
+            series: @dataset[0],
+            value: d.to_f,
+            graph_id: @graph.id
+          }) if (@dataset[0].empty? == false) && (d.to_f != 0)
         end
       end
     end
@@ -67,14 +125,26 @@ class DatatablesController < ApplicationController
     spreadsheet = Roo::Excelx.new(@datatable.path)
     spreadsheet.sheets.each do |name|
       # Create a new graph for each Excel sheet
-      @graph = Graph.create({name: name, category: "bar_chart", collection_id: params[:collection_id]})
+      @graph = Graph.create({ name: name, category: "bar_chart", collection_id: params[:collection_id] })
       # sheet = spreadsheet.sheet(name)
-      @row = []
-      spreadsheet.sheet(name).each_row_streaming { |r| @row.push(r) }
+      @dataset = []
+      # Added series and columns arrays that are passed to the datatable object
+      # and then used when building arrays
+      @series = []
+      @columns = []
+      spreadsheet.sheet(name).each_row_streaming { |r| @dataset.push(r) }
+      @dataset[0].each { |e| @columns.push(e.value) }
+      @dataset[1..-1].each { |e| @series.push(e[0].value) }
+
       # If the last cell of the first row in the Excel is a string, begin collecting the data from the next row instead.
-      @row[0..-1].each do |e|
-        e[1..-1].each do |v|
-          @datatable = Datatable.create({key: e[0], value: v.value.to_i, graph_id: @graph.id}) if (v.value.to_i != 0) && (e[0].nil? == false)
+      @dataset[1..-1].each_with_index do |e, i|
+        e[1..-1].each_with_index do |v, ii|
+          @datatable = Datatable.create({
+            series: @series[i],
+            column: @columns[ii],
+            value: v.value.to_i,
+            graph_id: @graph.id
+          }) if (v.value.to_i != 0) && (e[0].nil? == false)
         end
       end
     end
@@ -104,6 +174,6 @@ class DatatablesController < ApplicationController
   private
 
   def datable_params
-    params.require(:datatable).permit(:value, :key)
+    params.require(:datatable).permit(:value, :column, :series)
   end
 end
