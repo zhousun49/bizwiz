@@ -79,9 +79,11 @@
     pptx.save('presentation');
   });
 
-  const list = document.querySelector('#charts');
-  Sortable.create(list, {
-    ghostClass: "ghost",
-    animation: 150
-  });
+  if ( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    const list = document.querySelector('#charts');
+    Sortable.create(list, {
+      ghostClass: "ghost",
+      animation: 150
+    });
+  };
 </script>
