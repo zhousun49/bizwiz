@@ -6,6 +6,13 @@
     padding: 10px;
     background: #fff;
     margin-bottom: 1rem;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 576px) {
+  .preview #canvas {
+    min-height: 350px;
   }
 }
 

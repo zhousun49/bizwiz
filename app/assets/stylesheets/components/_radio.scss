@@ -28,7 +28,7 @@ fieldset.graph_category {
 
   input.radio_buttons:checked + label {
     color: #fff;
-    background: #8067B7;
+    background: #6A50A7;
     border: 1px solid #6A50A7;
   }
 }
@@ -71,4 +71,11 @@ fieldset.graph_category {
   font-style: normal;
   font-weight: normal;
   margin-right: 5px;
+}
+
+#chart-5 {
+  position: relative;
+  & > div > div {
+    margin: 0 auto;
+  }
 }
