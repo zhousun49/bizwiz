@@ -15,7 +15,9 @@ class DatatablesController < ApplicationController
     # of [Col, Val] array pairs
 
     @data_series = @datatables.group_by { |data| data[:series] }
+
     @data_series.each do |_k, v|
+      v.sort!
       arr = []
       v.each do |data|
         m_arr = []
@@ -47,7 +49,7 @@ class DatatablesController < ApplicationController
     # percentage
 
     @data_series.each do |k, v|
-      v.each do |data|
+        v.each do |data|
         arr = []
         arr << k
         arr << (data.value * 100 / total_value).round(1)

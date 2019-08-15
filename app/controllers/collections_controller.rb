@@ -53,6 +53,7 @@ class CollectionsController < ApplicationController
         end
 
         @data_series.each_with_index do |(k, v), ii|
+          v.sort!
           arr = []
           v.each do |data|
             m_arr = []
