@@ -5,4 +5,10 @@ require("chart.js")
 // Uncomment if using highcharts
 // require("chartkick").use(require("highcharts"))
 import { saveAs } from 'file-saver';
-window.Sortable = require('sortablejs').default;
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  window.Sortable = require('sortablejs');
+}else
+{
+  window.Sortable = require('sortablejs').default;
+}
