@@ -1,25 +1,37 @@
+<nav class="nav-breadcrumb">
+  <div class="container">
+    <%= link_to "Back to All Charts", collection_path(@graph.collection.slug) %> <span class="breadcrumb-sep">/</span> <%= link_to "Edit Chart", graph_datatables_path(@graph) %>
+  </div>
+</nav>
+
 <section class="result">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="dropdown">
-          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Share via QR code
-          </button>
-          <div class="dropdown-menu p-4" aria-labelledby="dropdownMenuButton">
-            <table class="qrcode">
-             <% @qr.modules.each_index do |x| -%>
-               <tr>
-               <% @qr.modules.each_index do |y| -%>
-                <% if @qr.dark?(x,y) -%>
-                  <td class="black"/>
-                <% else -%>
-                  <td class="white"/>
-                <% end -%>
-               <% end -%>
-               </tr>
-             <% end -%>
-            </table>
+          <div class="d-flex justify-content-end">
+            <aside>
+              <div class="btn-group">
+                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Share via QR code
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <table class="qrcode">
+                   <% @qr.modules.each_index do |x| -%>
+                     <tr>
+                     <% @qr.modules.each_index do |y| -%>
+                      <% if @qr.dark?(x,y) -%>
+                        <td class="black"/>
+                      <% else -%>
+                        <td class="white"/>
+                      <% end -%>
+                     <% end -%>
+                     </tr>
+                   <% end -%>
+                  </table>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
         <div id="canvas" class="rounded shadow-sm">
@@ -37,7 +49,6 @@
         </div>
 
         <div class="result-btns">
-          <%= link_to "Edit chart", graph_datatables_path(@graph), class: "btn btn-outline-primary" %>
           <%= link_to "Make a new chart", graph_path(@graph), method: :DELETE, class: "btn btn-outline-primary", data:{ confirm: "Your current chart and data will be deleted.\n\nAre you sure?"} %>
           <button id="save-btn" class="btn btn-primary">Download chart as an image</button>
         </div>

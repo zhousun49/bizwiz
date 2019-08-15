@@ -18,21 +18,3 @@
     display: block;
   }
 }
-
-.nav-breadcrumb {
-  padding: 20px;
-  background: #EFEEF4;
-
-  a:before {
-    font-family: FontAwesome;
-    font-weight: normal;
-    font-style: normal;
-    display: inline-block;
-    content: "\f104";
-    margin-right: 8px;
-  }
-
-  a:hover {
-    text-decoration: none;
-  }
-}
