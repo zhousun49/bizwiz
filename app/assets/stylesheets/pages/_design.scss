@@ -19,18 +19,19 @@
   }
 }
 
-.nav-link {
-  background: rgba(40,44,42,0.05);
+.nav-tabs .nav-link {
+  background-color: rgba(40,44,42,0.05);
   color: #74777b;
-  padding: 1rem;
+  padding: 1.25rem 0;
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 
   &.active {
-    background: none;
-    box-shadow: inset 0 3px 0 #2CC185;
-    color: #2CC185;
+    background-color: #fff;
+    box-shadow: inset 0 3px 0 $blue;
+    color: $black;
     font-weight: bold;
+    border-color: #dee2e6 transparent transparent;
 
     img {
       opacity: 1;
@@ -40,7 +41,14 @@
   img {
     height: 20px;
     width: auto;
-    margin-right: 5px;
-    opacity: .5;
+    margin-right: 8px;
+    opacity: .4;
+    vertical-align: text-bottom;
   }
 }
+
+.tab-content {
+  background: #fff;
+  padding: 2rem 1.5rem;
+}
+
