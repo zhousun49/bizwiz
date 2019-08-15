@@ -33,15 +33,15 @@
             <% if graph.category.nil? %>
               <p>No preview available</p>
             <% elsif graph.category.include?('bar') %>
-              <%= bar_chart @multi_series_options[i][:options] %>
+              <%= bar_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
             <% elsif graph.category.include?('line') %>
-              <%= line_chart @multi_series_options[i][:options] %>
+              <%= line_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
             <% elsif graph.category.include?('pie') %>
-              <%= pie_chart @pie_options[i][:options] %>
+              <%= pie_chart @pie_options[i][:options], donut: true, legend: "bottom", prefix: "%" %>
             <% elsif graph.category.include?('geo') %>
-              <%= geo_chart @geo_options[i][:options] %>
+              <%= geo_chart @geo_options[i][:options], thousands: ",", prefix: "$" %>
             <% elsif graph.category.include?('area') %>
-              <%= area_chart @multi_series_options[i][:options] %>
+              <%= area_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
             <% end %>
 
             <%= link_to graph_datatables_path(graph) do %>
