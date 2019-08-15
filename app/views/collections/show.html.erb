@@ -41,13 +41,15 @@
                 <% if graph.category.nil? %>
                   <p>No preview available</p>
                 <% elsif graph.category.include?('bar') %>
-                  <%= bar_chart @canvas_data[i] %>
+                  <%= bar_chart @multi_series_options[i][:options] %>
                 <% elsif graph.category.include?('line') %>
-                  <%= area_chart @canvas_data[i] %>
+                  <%= line_chart @multi_series_options[i][:options] %>
                 <% elsif graph.category.include?('pie') %>
-                  <%= pie_chart @canvas_data[i] %>
+                  <%= pie_chart @pie_options[i][:options] %>
                 <% elsif graph.category.include?('geo') %>
-                  <%= geo_chart @canvas_data[i] %>
+                  <%= geo_chart @geo_options[i][:options] %>
+                <% elsif graph.category.include?('area') %>
+                  <%= area_chart @multi_series_options[i][:options] %>
                 <% end %>
               </div>
               <div class="collection-card-link">
