@@ -11,10 +11,11 @@ class GraphsController < ApplicationController
     if @graph.nil?
       render "graphs/empty"
     elsif Time.now > @graph.created_at + 15.minutes
+      @graph.collection.destroy
       @graph.destroy
       render "graphs/empty"
     else
-      @qr = RQRCode::QRCode.new("http://bizwiz.herokuapp.com/graphs/#{params[:slug]}")
+      @qr = RQRCode::QRCode.new("http://bizwiz.me/graphs/#{params[:slug]}")
       @datatables = @graph.datatables
       @data_arrays = []
       @pie_array = []
