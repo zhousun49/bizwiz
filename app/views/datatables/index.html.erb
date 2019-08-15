@@ -47,6 +47,7 @@
             <table class="table">
               <thead class="thead-light">
                 <tr>
+                  <th scope="col">Columns</th>
                   <th scope="col">Series</th>
                   <th scope="col">Value</th>
                   <th scope="col"></th>
@@ -55,7 +56,8 @@
               <tbody>
                 <% @datatables.each do |e| %>
                 <tr>
-                  <td scope="row"><%= e.series %></td>
+                  <td scope="row"><%= e.column %></td>
+                  <td><%= e.series %></td>
                   <td><%= e.value %></td>
                   <td>
                     <%= link_to  'Edit', edit_graph_datatable_path(params[:graph_slug], e.id), class: "text-secondary" %>
@@ -68,6 +70,7 @@
             <%= simple_form_for @datatable, url: {action: "create"} do |f| %>
               <%= f.input :series, label: 'Label' %>
               <%= f.input :value %>
+              <%= f.input :column, as: :radio_buttons, label: "Column", collection: @col %>
               <%= f.submit 'Add data', class: "btn btn-outline-primary" %>
             <% end %>
           </div>
