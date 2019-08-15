@@ -66,6 +66,7 @@ class CollectionsController < ApplicationController
 
 
         @data_series.each_with_index do |(k, v), iii|
+          v.sort!
           arr = []
           v.each do |data|
             arr << k
@@ -75,6 +76,7 @@ class CollectionsController < ApplicationController
         end
 
         @data_series.each_with_index do |(k, v), iiii|
+          v.sort!
           arr = []
           v.each do |data|
             arr << k

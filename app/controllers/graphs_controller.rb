@@ -54,6 +54,7 @@ class GraphsController < ApplicationController
     # this makes an array specifically for a pie chart, automatically calculating
     # percentage
       @data_series.each do |k, v|
+        v.sort!
         v.each do |data|
           m_arr = []
           m_arr << k
@@ -63,6 +64,7 @@ class GraphsController < ApplicationController
       end
     # this makes an array specifically for a geo_chart
       @data_series.each do |k, v|
+        v.sort!
         v.each do |data|
           m_arr = []
           m_arr << k
