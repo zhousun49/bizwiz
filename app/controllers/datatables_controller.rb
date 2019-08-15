@@ -49,8 +49,7 @@ class DatatablesController < ApplicationController
     # percentage
 
     @data_series.each do |k, v|
-      v.sort!
-      v.each do |data|
+        v.each do |data|
         arr = []
         arr << k
         arr << (data.value * 100 / total_value).round(1)
@@ -61,7 +60,6 @@ class DatatablesController < ApplicationController
     # this makes an array specifically for a geo_chart
 
     @data_series.each do |k, v|
-      v.sort!
       v.each do |data|
         arr = []
         arr << k
