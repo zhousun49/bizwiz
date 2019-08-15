@@ -125,19 +125,19 @@ class DatatablesController < ApplicationController
       table.rows.each do |row|
         arr = []
         row.cells.each do |e|
-          arr << e.text if e.text != ""
+          arr << e.text if e.text.blank? == false
         end
           @dataset << arr
       end
       @dataset[0].each { |e| @columns.push(e) }
       @dataset[1..-1].each { |e| @series.push(e[0]) }
-    end
-
-    @dataset[1..-1].each_with_index do |d, i|
-      d[1..-1].each_with_index do |v, ii|
-        @datatable = Datatable.create({ series: @series[i], column: @columns[ii], value: v.to_f, graph_id: @graph.id }) if (@dataset[0].empty? == false) && (v.to_f != 0)
+      @dataset[1..-1].each_with_index do |d, i|
+        d[1..-1].each_with_index do |v, ii|
+          @datatable = Datatable.create({ series: @series[i], column: @columns[ii], value: v.to_f, graph_id: @graph.id }) if (@dataset[0].empty? == false) && (v.to_f != 0)
+        end
       end
     end
+
   end
 
   def xlsx_read
