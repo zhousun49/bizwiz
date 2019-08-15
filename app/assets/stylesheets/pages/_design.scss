@@ -18,3 +18,29 @@
     display: block;
   }
 }
+
+.nav-link {
+  background: rgba(40,44,42,0.05);
+  color: #74777b;
+  padding: 1rem;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+
+  &.active {
+    background: none;
+    box-shadow: inset 0 3px 0 #2CC185;
+    color: #2CC185;
+    font-weight: bold;
+
+    img {
+      opacity: 1;
+    }
+  }
+
+  img {
+    height: 20px;
+    width: auto;
+    margin-right: 5px;
+    opacity: .5;
+  }
+}

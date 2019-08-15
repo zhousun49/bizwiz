@@ -25,13 +25,12 @@
           <%= geo_chart @geo_array %>
         </div>
 
-      <!-- tabs -->
-        <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-tabs nav-justified mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-chart-tab" data-toggle="pill" href="#pills-chart" role="tab" aria-controls="pills-chart" aria-selected="true">Chart Templates</a>
+            <a class="nav-link active" id="pills-chart-tab" data-toggle="pill" href="#pills-chart" role="tab" aria-controls="pills-chart" aria-selected="true"><img src="<%= image_path "chart-template.png" %>" alt="">Chart Templates</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-data-tab" data-toggle="pill" href="#pills-data" role="tab" aria-controls="pills-data" aria-selected="false">Data Editor</a>
+            <a class="nav-link" id="pills-data-tab" data-toggle="pill" href="#pills-data" role="tab" aria-controls="pills-data" aria-selected="false"><img src="<%= image_path "chart-edit.png" %>" alt="">Data Editor</a>
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
