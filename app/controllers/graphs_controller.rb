@@ -25,6 +25,7 @@ class GraphsController < ApplicationController
     # of [Col, Val] array pairs
       @data_series = @datatables.group_by { |data| data[:series] }
       @data_series.each do |_k, v|
+        v.sort!
         arr = []
         v.each do |data|
           m_arr = []
