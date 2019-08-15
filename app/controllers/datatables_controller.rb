@@ -48,10 +48,10 @@ class DatatablesController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        m_arr = []
-        m_arr << k
-        m_arr << (data.value * 100 / total_value).round(1)
-        @pie_array << m_arr
+        arr = []
+        arr << k
+        arr << (data.value * 100 / total_value).round(1)
+        @pie_array << arr
       end
     end
 
@@ -59,7 +59,7 @@ class DatatablesController < ApplicationController
 
     @data_series.each do |k, v|
       v.each do |data|
-        arr =Array.new
+        arr = []
         arr << k
         arr << data.value
         @geo_array << arr
