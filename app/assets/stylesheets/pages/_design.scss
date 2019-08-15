@@ -6,6 +6,13 @@
     padding: 10px;
     background: #fff;
     margin-bottom: 1rem;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 576px) {
+  .preview #canvas {
+    min-height: 350px;
   }
 }
 
@@ -50,5 +57,11 @@
 .tab-content {
   background: #fff;
   padding: 2rem 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .tab-content {
+    padding: 2rem 1rem;
+  }
 }
 

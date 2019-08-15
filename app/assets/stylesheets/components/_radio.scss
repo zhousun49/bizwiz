@@ -1,0 +1,81 @@
+fieldset.graph_category {
+  .form-check {
+    padding-left: 0;
+    display: inline-block;
+    margin-right: 1rem;
+    margin-bottom: .5rem;
+  }
+
+  input.radio_buttons {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  input.radio_buttons + label {
+    color: #656D78;
+    border: 1px solid #AAB2BD;
+    display: inline-block;
+    padding: .75rem 1.25rem;
+    min-width: 120px;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  input.radio_buttons:checked + label {
+    color: #fff;
+    background: #6A50A7;
+    border: 1px solid #6A50A7;
+  }
+}
+
+#graph_category_pie_chart + label:before{
+  content: "\f200";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  margin-right: 8px;
+}
+
+#graph_category_bar_chart + label:before{
+  content: "\f080";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  margin-right: 8px;
+}
+
+#graph_category_line_chart + label:before{
+  content: "\f201";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  margin-right: 8px;
+}
+
+#graph_category_area_chart + label:before{
+  content: "\f1fe";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  margin-right: 8px;
+}
+
+#graph_category_geo_chart + label:before{
+  content: "\f0ac";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  margin-right: 5px;
+}
+
+#chart-5 {
+  position: relative;
+  & > div > div {
+    margin: 0 auto;
+  }
+}
