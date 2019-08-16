@@ -79,7 +79,7 @@
     var pptx = new PptxGenJS();
     allData.forEach(function(d){
       var slide = pptx.addNewSlide();
-      slide.addImage({ data: d, x:0.0, y:0.0, w:5.0, h:4.0 });
+      slide.addImage({ data: d, x:2.5, y:0.5, w:5.0, h:5.0 });
     })
     pptx.save('presentation');
   });
