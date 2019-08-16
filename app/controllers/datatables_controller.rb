@@ -99,7 +99,7 @@ class DatatablesController < ApplicationController
     reader.pages.each do |page|
       graph_slug = SecureRandom.hex(10)
       c = Collection.find_by(slug: params[:collection_slug])
-      @graph = Graph.create({category: ["bar_chart", "area_chart", 'line_chart', 'pie_chart'].sample, collection_id: c.id, slug: graph_slug})
+      @graph = Graph.create({category: "geo_chart", collection_id: c.id, slug: graph_slug})
       s = page.text.split("\n")
       new_s = s.reject { |e| e.to_s.empty? }
       first_row = new_s[0].split
