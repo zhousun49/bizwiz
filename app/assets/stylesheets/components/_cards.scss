@@ -6,11 +6,30 @@
     margin-bottom: 0;
   }
 
-  .collection-title {
+  .collection-header {
     margin-bottom: 1.5rem;
 
     button {
       padding: 0;
+    }
+  }
+
+  .collection-title {
+    h2 {
+      margin-right: 1rem;
+    }
+
+    .btn {
+      padding: .75rem 1.125rem;
+    }
+
+    .btn:before {
+      content: "\f067";
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      margin-right: 8px;
     }
   }
 
@@ -23,8 +42,15 @@
   }
 }
 
-@media (max-width: 576px) {
+@media (min-width: 576px) {
+  .collection-header,
   .collection-title {
+    align-items: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .collection-header {
     flex-direction: column;
   }
 }

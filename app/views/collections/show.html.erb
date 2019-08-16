@@ -1,7 +1,11 @@
 <div class="collection">
   <div class="container">
-    <div class="collection-title d-flex justify-content-between">
-      <h2>All Charts</h2>
+    <div class="collection-header d-flex justify-content-between">
+      <aside class="d-flex collection-title">
+        <h2>All Charts</h2>
+        <%= link_to "Upload more files", new_collection_datatable_path(@collection.slug), class: "btn btn-outline-primary" %>
+      </aside>
+
       <aside>
         <div class="btn-group">
           <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
