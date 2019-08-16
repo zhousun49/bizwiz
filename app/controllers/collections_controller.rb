@@ -11,76 +11,83 @@ class CollectionsController < ApplicationController
 
   def show
     @collection = Collection.find_by(slug: params[:slug])
-    @qr = RQRCode::QRCode.new("http://bizwiz.me/collections/#{params[:slug]}")
-    @graphs = @collection.graphs.order(id: :asc)
-    @canvas_data = []
+    if @collection.nil?
+      render "graphs/empty"
+    elsif Time.now > @collection.created_at + 15.minutes
+      @collection.destroy
+      render "graphs/empty"
+    else
+      @qr = RQRCode::QRCode.new("http://bizwiz.me/collections/#{params[:slug]}")
+      @graphs = @collection.graphs.order(id: :asc)
+      @canvas_data = []
 
-    @graphs.each do |graph|
-      arr = graph.datatables.group_by { |data| data[:graph_id]}
-      @canvas_data << arr
-    end
+      @graphs.each do |graph|
+        arr = graph.datatables.group_by { |data| data[:graph_id]}
+        @canvas_data << arr
+      end
 
-    @multi_series_options = []
-    @pie_options = []
-    @geo_options = []
-    @canvas_data.each do |graph|
-      graph.each_with_index do |(graph_id, datatables), i|
-        total_value = 0
-        datatables.each { |e| total_value += e.value }
-
-
-        multi_series_graph_import = {}
-        pie_graph_import = {}
-        geo_graph_import = {}
-
-        multi_series_graph_import[:graph_id] = graph_id
-        pie_graph_import[:graph_id] = graph_id
-        geo_graph_import[:graph_id] = graph_id
-
-        @multi_series_options << multi_series_graph_import
-        @pie_options << pie_graph_import
-        @geo_options << geo_graph_import
-
-        multi_series_graph_import[:options] = []
-        pie_graph_import[:options] = []
-        geo_graph_import[:options] = []
+      @multi_series_options = []
+      @pie_options = []
+      @geo_options = []
+      @canvas_data.each do |graph|
+        graph.each_with_index do |(graph_id, datatables), i|
+          total_value = 0
+          datatables.each { |e| total_value += e.value }
 
 
-        @data_series = datatables.group_by { |data| data[:series] }
+          multi_series_graph_import = {}
+          pie_graph_import = {}
+          geo_graph_import = {}
 
-        @data_series.keys.each do |key|
-          multi_series_graph_import[:options] << { name: key }
-        end
+          multi_series_graph_import[:graph_id] = graph_id
+          pie_graph_import[:graph_id] = graph_id
+          geo_graph_import[:graph_id] = graph_id
 
-        @data_series.each_with_index do |(k, v), ii|
-          v.sort!
-          arr = []
-          v.each do |data|
-            m_arr = []
-            m_arr << data.column
-            m_arr << data.value
-            arr << m_arr
+          @multi_series_options << multi_series_graph_import
+          @pie_options << pie_graph_import
+          @geo_options << geo_graph_import
+
+          multi_series_graph_import[:options] = []
+          pie_graph_import[:options] = []
+          geo_graph_import[:options] = []
+
+
+          @data_series = datatables.group_by { |data| data[:series] }
+
+          @data_series.keys.each do |key|
+            multi_series_graph_import[:options] << { name: key }
           end
-          multi_series_graph_import[:options][ii][:data] = arr
-        end
 
-
-        @data_series.each_with_index do |(k, v), iii|
-          arr = []
-          v.each do |data|
-            arr << k
-            arr << (data.value * 100 / total_value).round(1)
+          @data_series.each_with_index do |(k, v), ii|
+            v.sort!
+            arr = []
+            v.each do |data|
+              m_arr = []
+              m_arr << data.column
+              m_arr << data.value
+              arr << m_arr
+            end
+            multi_series_graph_import[:options][ii][:data] = arr
           end
-          pie_graph_import[:options][iii] = arr
-        end
 
-        @data_series.each_with_index do |(k, v), iiii|
-          arr = []
-          v.each do |data|
-            arr << k
-            arr << data.value
+
+          @data_series.each_with_index do |(k, v), iii|
+            arr = []
+            v.each do |data|
+              arr << k
+              arr << (data.value * 100 / total_value).round(1)
+            end
+            pie_graph_import[:options][iii] = arr
           end
-          geo_graph_import[:options][iiii] = arr
+
+          @data_series.each_with_index do |(k, v), iiii|
+            arr = []
+            v.each do |data|
+              arr << k
+              arr << data.value
+            end
+            geo_graph_import[:options][iiii] = arr
+          end
         end
       end
     end
