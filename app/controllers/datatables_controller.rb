@@ -1,7 +1,7 @@
 class DatatablesController < ApplicationController
   def index
     graph = Graph.find_by(slug: params[:graph_slug])
-    @datatables = Datatable.where(graph_id: graph.id)
+    @datatables = Datatable.where(graph_id: graph.id).order(id: :asc)
     @graph = @datatables.first.graph
     @datatable = Datatable.new
     # @datatable.graph_id = params[:graph_id]
@@ -20,10 +20,10 @@ class DatatablesController < ApplicationController
       v.sort!
       arr = []
       v.each do |data|
-        m_arr = []
-        m_arr << data.column
-        m_arr << data.value
-        arr << m_arr
+        # m_arr = []
+        # m_arr << data.column
+        # m_arr << data.value
+        arr << [data.column, data.value]
       end
       @data_arrays << arr
     end
@@ -56,7 +56,6 @@ class DatatablesController < ApplicationController
         @pie_array << arr
       end
     end
-
     # this makes an array specifically for a geo_chart
 
     @data_series.each do |k, v|
@@ -67,6 +66,9 @@ class DatatablesController < ApplicationController
         @geo_array << arr
       end
     end
+    @col = []
+    @datatables.each {|e| @col << e.column}
+    @col = @col.uniq
   end
 
   def new
@@ -97,14 +99,17 @@ class DatatablesController < ApplicationController
     reader.pages.each do |page|
       graph_slug = SecureRandom.hex(10)
       c = Collection.find_by(slug: params[:collection_slug])
-      @graph = Graph.create({category: "bar_chart", collection_id: c.id, slug: graph_slug})
+      @graph = Graph.create({category: ["bar_chart", "area_chart", 'line_chart', 'pie_chart'].sample, collection_id: c.id, slug: graph_slug})
       s = page.text.split("\n")
-      s.each do |e|
+      new_s = s.reject { |e| e.to_s.empty? }
+      first_row = new_s[0].split
+      new_s.each do |e|
         e = e.split
         e[1..-1].each do |v|
           @datatable = Datatable.create({
             series: e[0],
             value: v.to_f,
+            column: first_row[e.index(v) - 1],
             graph_id: @graph.id
           }) if (e[0].empty? == false) && (v.to_f != 0)
         end
@@ -118,7 +123,7 @@ class DatatablesController < ApplicationController
     doc.tables.each do |table|
       graph_slug = SecureRandom.hex(10)
       c = Collection.find_by(slug: params[:collection_slug])
-      @graph = Graph.create({category: "bar_chart", collection_id: c.id, slug: graph_slug})
+      @graph = Graph.create({category: ["bar_chart", "area_chart", 'line_chart', 'pie_chart'].sample, collection_id: c.id, slug: graph_slug})
       @series = []
       @columns = []
       @dataset = []
@@ -146,7 +151,7 @@ class DatatablesController < ApplicationController
       # Create a new graph for each Excel sheet
       graph_slug = SecureRandom.hex(10)
       c = Collection.find_by(slug: params[:collection_slug])
-      @graph = Graph.create({name: name, category: "bar_chart", collection_id: c.id, slug: graph_slug})
+      @graph = Graph.create({name: name, category: ["bar_chart", "area_chart", 'line_chart', 'pie_chart'].sample, collection_id: c.id, slug: graph_slug})
 
       # Added series and columns arrays that are passed to the datatable object
       # and then used when building arrays

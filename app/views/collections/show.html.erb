@@ -1,13 +1,17 @@
 <div class="collection">
   <div class="container">
-    <div class="collection-title d-flex justify-content-between">
-      <h2>All Charts</h2>
-      <div class="btn-group">
-        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Export charts as
-        </button>
-        <div class="dropdown-menu dropdown-menu-right">
-          <div class="dropdown-item">
+    <div class="collection-header d-flex justify-content-between">
+      <aside class="d-flex collection-title">
+        <h2>All Charts</h2>
+        <%= link_to "Upload more files", new_collection_datatable_path(@collection.slug), class: "btn btn-outline-primary" %>
+      </aside>
+
+      <aside>
+        <div class="btn-group">
+          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Share via QR code
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
             <table class="qrcode">
              <% @qr.modules.each_index do |x| -%>
                <tr>
@@ -22,36 +26,44 @@
              <% end -%>
             </table>
           </div>
-          <div class="dropdown-divider"></div>
-          <a id="export-ppt" class="dropdown-item" href="#">Powerpoint (.ppt)</a>
         </div>
-      </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Download charts as
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a id="export-ppt" class="dropdown-item" href="#">Powerpoint (.pptx)</a>
+          </div>
+        </div>
+      </aside>
     </div>
     <div class="row" id="charts">
-        <% @graphs.each_with_index do | graph, i | %>
-              <div class="col-md-4">
-            <% if graph.category.nil? %>
-              <p>No preview available</p>
-            <% elsif graph.category.include?('bar') %>
-              <%= bar_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
-            <% elsif graph.category.include?('line') %>
-              <%= line_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
-            <% elsif graph.category.include?('pie') %>
-              <%= pie_chart @pie_options[i][:options], donut: true, legend: "bottom", prefix: "%" %>
-            <% elsif graph.category.include?('geo') %>
-              <%= geo_chart @geo_options[i][:options], thousands: ",", prefix: "$" %>
-            <% elsif graph.category.include?('area') %>
-              <%= area_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
-            <% end %>
-
-            <%= link_to graph_datatables_path(graph) do %>
-            <div class="collection-card">
-              <%= graph.name.nil? ? "Graph #{i + 1}" : graph.name %>
+      <% @graphs.each_with_index do | graph, i | %>
+        <div class="col-md-4">
+          <div class="collection-card">
+            <div class="collection-card-chart">
+              <% if graph.category.nil? %>
+                <p>No preview available</p>
+              <% elsif graph.category.include?('bar') %>
+                <%= bar_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
+              <% elsif graph.category.include?('line') %>
+                <%= line_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
+              <% elsif graph.category.include?('pie') %>
+                <%= pie_chart @pie_options[i][:options], donut: true, legend: "bottom", prefix: "%" %>
+              <% elsif graph.category.include?('geo') %>
+                <%= geo_chart @geo_options[i][:options], thousands: ",", prefix: "$" %>
+              <% elsif graph.category.include?('area') %>
+                <%= area_chart @multi_series_options[i][:options], thousands: ",", prefix: "$" %>
+              <% end %>
             </div>
-            <% end %>
+            <div class="collection-card-link">
+              <%= link_to graph_datatables_path(graph) do %>
+                <%= graph.name.nil? ? "Graph #{i + 1}" : graph.name %>
+              <% end %>
+            </div>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -72,12 +84,11 @@
     pptx.save('presentation');
   });
 
-  const list = document.querySelector('#charts');
-  Sortable.create(list, {
-    ghostClass: "ghost",
-    animation: 150,
-    onEnd: (event) => {
-      alert(`${event.oldIndex} moved to ${event.newIndex}`);
-    }
-  });
+  if ( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    const list = document.querySelector('#charts');
+    Sortable.create(list, {
+      ghostClass: "ghost",
+      animation: 150
+    });
+  };
 </script>
