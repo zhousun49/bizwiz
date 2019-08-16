@@ -6,3 +6,9 @@ require("chart.js")
 // require("chartkick").use(require("highcharts"))
 import { saveAs } from 'file-saver';
 window.Sortable = require('sortablejs').default;
+
+window.Chartkick = Chartkick
+Chartkick.addAdapter(Chart)
+Chartkick.options = {
+  library: {animation: {easing: 'easeOutQuart'}},
+}
