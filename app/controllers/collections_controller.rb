@@ -11,7 +11,7 @@ class CollectionsController < ApplicationController
 
   def show
     @collection = Collection.find_by(slug: params[:slug])
-    @qr = RQRCode::QRCode.new("http://bizwiz.me/collections/#{params[:slug]}")
+    @qr = RQRCode::QRCode.new("https://bizwiz.me/collections/#{params[:slug]}")
     @graphs = @collection.graphs.order(id: :asc)
     @canvas_data = []
 
