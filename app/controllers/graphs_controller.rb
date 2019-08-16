@@ -15,7 +15,7 @@ class GraphsController < ApplicationController
       @graph.destroy
       render "graphs/empty"
     else
-      @qr = RQRCode::QRCode.new("https://bizwiz.me/graphs/#{params[:slug]}")
+      @qr = RQRCode::QRCode.new("https://www.bizwiz.me/graphs/#{params[:slug]}")
       @datatables = @graph.datatables
       @data_arrays = []
       @pie_array = []
